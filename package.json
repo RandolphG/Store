@@ -1,35 +1,4 @@
 {
-  "name": "store",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.0.1",
-    "@testing-library/user-event": "^14.1.1",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^17.0.25",
-    "@types/react": "^18.0.6",
-    "@types/react-dom": "^18.0.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.1",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.6.0",
-    "web-vitals": "^2.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -41,5 +10,61 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.0.1",
+    "@testing-library/user-event": "^14.1.1",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.12",
+    "@types/express-graphql": "^0.9.0",
+    "@types/graphql": "^14.5.0",
+    "@types/jest": "^27.4.1",
+    "@types/jquery": "^3.5.14",
+    "@types/node": "^17.0.25",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "framer-motion": "^7.6.2",
+    "graphql": "^15.5.0",
+    "i18next": "^20.3.5",
+    "jquery": "^3.6.1",
+    "jsdom": "^16.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.14",
+    "node-sass": "^7.0.3",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.1",
+    "react-router-dom": "^6.4.2",
+    "react-scripts": "5.0.1",
+    "sass-loader": "^11.0.1",
+    "typescript": "^4.6.0",
+    "web-vitals": "^2.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "name": "store",
+  "private": true,
+  "scripts": {
+    "react": "react-scripts start",
+    "start": "node server/app.js",
+    "nodemon": "nodemon server/index.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "postinstall": "tsc"
+  },
+  "version": "0.1.0"
 }

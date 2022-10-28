@@ -1,0 +1,905 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+:root {
+  --body: #121a2d;
+  --bg: #20130f;
+  --bg-border: #352011;
+  --bg-border-active: #5c3b24;
+  --grunge: url(https://live.staticflickr.com/4081/4902962864_c71114e208_b.jpg);
+  --logo-large: url(https://assets.codepen.io/13471/wow-logo-large.png);
+  --logo-small: url(https://assets.codepen.io/13471/wow-logo-small.png);
+  --logo-height: 6em;
+  --logo-aspect: 2.55;
+  --g-1-1: #efd100;
+  --g-1-2: #e2a233;
+  --g-1-3: #f0c328;
+  --g-1-4: #fff1a3;
+  --g-1-5: #ffe13e;
+  --sub-bg: #5c1105;
+  --try-bg: #350d0b;
+  --sub-shadow: #cb361d3d;
+  --shadow: #ffdba3c7;
+  --hover-shadow: drop-shadow(0 0 0.22em var(--shadow)) drop-shadow(0 0 .66em var(--shadow)) drop-shadow(0 0.05em 0.05em black);
+  --time: .25s;
+  --ease: cubic-bezier(.23,1,.32,1);
+  --nav-search-top: clamp( 10px, 130px, 36vw );
+  --bar-height: 36px;
+}
+
+.blizz {
+  width: 100vw;
+  height: var(--bar-height);
+  background: linear-gradient(180deg, #11141b, #0b0d12);
+  box-shadow: 0 1 0 #252c37, 0 5 5 -2 #00000044;
+}
+
+.warcraft {
+  --header-top: 75px;
+  --header-height: 4.475em;
+  --fixed-height: 50px;
+  --logo-offset: 3em;
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  * { font-size: inherit; }
+  &, & * {
+    will-change: font, transform, height, width, margin, padding, color, background;
+    transition: all 0.33s ease, font 0s ease;
+  }
+
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  margin: auto;
+  z-index: 1;
+}
+
+.warcraft.small {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.nav {
+  position: absolute;
+  transform: translate( -50%, var(--header-top) );
+  left: 50%;
+  width: 1440px;
+  max-width: 100%;
+
+  &__burger,
+  &__close {
+    display: none;
+  }
+
+  &__bg {
+    margin-left: calc( var(--logo-offset) + 1em );
+    position: relative;
+  }
+
+  &__bg,
+  &__drawer {
+    background-color: var(--bg);
+    background-image: linear-gradient(
+                    to bottom,
+                    rgba(255,255,255,0.025),
+                    rgba(0,0,0,0.075) );
+    box-shadow: inset 0 0 0 1 rgba(0,0,0,0.25),
+    0 4 12 -5 rgba(0,0,0,0.65);
+
+    &:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: var(--grunge);
+      background-position: center;
+      mix-blend-mode: overlay;
+      opacity: .22;
+    }
+  }
+
+  &__icon,
+  &__blizz {
+    width: 2.8em;
+    height: 2.8em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-300%);
+    z-index: 1;
+    filter: brightness(0.9) contrast(0.9) saturate(.9);
+    opacity: 0;
+    color: #00aeff;
+    cursor: pointer;
+    img {
+      max-width: 100%;
+    }
+    &:hover,
+    &:active,
+    &:focus {
+      filter: brightness(1.1) contrast(1.1) saturate(1);
+    }
+  }
+
+  &__blizz {
+    right: 0.5em;
+    left: auto;
+    transform: translate(0,-200px);
+    display: grid;
+    place-items: center;
+    place-content: center;
+    overflow: hidden;
+    svg {
+      width: 3.8em;
+    }
+  }
+
+  &__list {
+    height: var(--header-height);
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+
+    &--logo { }
+
+    &--search {
+      margin-left: auto;
+    }
+
+    &--try,
+    &--sub {
+      background-image: var(--grunge), linear-gradient(180deg, #ffffffb8, #676767);
+      background-color: #999;
+      background-blend-mode: overlay;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2), inset 0 0 3px rgba(0, 0, 0, 0.2);
+      background-position: 28%, center;
+      &:before {
+        background: var(--sub-bg);
+        box-shadow: inset 0 0 0 1px var(--sub-shadow);
+      }
+    }
+
+    &--sub {
+      &:before {
+        background: var(--sub-bg);
+      }
+    }
+
+    &--try {
+      &:before {
+        background: var(--try-bg);
+      }
+    }
+
+  }
+
+  &__item > a,
+  &__item > button {
+
+    padding: 0 0.5rem;
+    margin: 0.075rem 0;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 0 0 -1px rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+  }
+
+  &__item > button {
+    justify-content: center;
+    width: 4em;
+  }
+
+  &__item svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    height: 1.3em;
+    display: block;
+    padding: 0 0.25em;
+    &.close {
+      height: 1.5em;
+    }
+  }
+
+  &__item--alt {
+    > a,
+    > button {
+      border-right: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: -2px 0 0 -1px rgba(0, 0, 0, 0.5);
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: hard-light;
+      border-left: none;
+    }
+  }
+
+  &__item:nth-child(2) > a,
+  &__item:nth-last-child(2) > a,
+  &__item:nth-child(2) > button,
+  &__item:nth-last-child(2) > button {
+    border-left: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 0 0 -1px rgba(255, 255, 255, 0.05),
+    -2px 0 0 -1px rgba(255, 255, 255, 0.05);
+
+  }
+
+  &__item--sub > a,
+  &__item--try > a {
+    border: none!important;
+  }
+
+  &__item--try > a {
+    box-shadow: none;
+  }
+
+  &__text {
+    position: relative;
+    padding: 0 2px;
+    background-image: linear-gradient( to bottom,
+            var(--g-1-1) 0%,
+            var(--g-1-2) 19%,
+            var(--g-1-3) 30%,
+            var(--g-1-4) 43%,
+            var(--g-1-5) 50%,
+            var(--g-1-5) 51%,
+            white 100% );
+    background-size: 1em 2em;
+    color: var(--g-1-2);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    filter: drop-shadow(0 0 0.1em transparent) drop-shadow(0 .05em .05em black);
+    transition-timing-function: var(--ease);
+    transition-property: background, all, font-weight;
+    transition-duration:  var(--time), .5s, 0s;
+    transition-delay: 0.2s, 0s, 0s;
+  }
+
+  &__item:hover,
+  &__item:focus,
+  &__item:active {
+    & .nav__text {
+
+      filter: var(--hover-shadow);
+      background-position: center 100%;
+      background-size: 1em 6em;
+      transition-duration: var(--time), .5s;
+      transition-delay: 0s;
+
+    }
+
+    & svg {
+      color: white;
+    }
+  }
+
+  &__title {
+    position: relative;
+    width: 12em;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate( 0, 0 );
+
+    &:hover {
+      filter: brightness(1.3);
+    }
+
+    a {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  &__logo {
+    position: absolute;
+    top: 50%;
+    height: var(--logo-height);
+    transform-origin: center;
+    transform: translateY(-50%) translateX(0) scale(1);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &.small {
+      height: 2.5em;
+      opacity: 0;
+      position: relative;
+      top: -2px;
+      transform: translateX(0) scale(2);
+    }
+
+    &.large {
+      aspect-ratio: var(--logo-aspect);
+      background-image: var(--logo-large);
+      transform: translateY(-50%) translateX( calc(-0.7 * var(--logo-offset) )) scale(1);
+    }
+  }
+
+  &__alt {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+
+  &__search {
+    position: absolute;
+    left: calc( 0em - var(--logo-offset) );
+    right: 0;
+    top: calc( var(--header-height) );
+    overflow: hidden;
+    padding: 3em 2em;
+    background-color: var(--bg);
+    background-image: linear-gradient( 180deg, rgba(0,0,0,0.25), transparent );
+    box-shadow: inset 0 30px 30px -25px black, 0 5px 10px -5px black;
+    height: 10em;
+    border: 1px solid var(--bg-border);
+    transform: translateY(-5em) scaleY(0);
+    opacity: 0;
+    z-index: -1;
+  }
+
+  &__search__input {
+    border: 1px solid var(--bg-border);
+    background: rgba(0,0,0,0.75);
+    width: 100%;
+    padding: 1.15em 1em 1.15em 2em;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12.5px;
+    text-rendering: optimizelegibility;
+    font-feature-settings: "kern" 1,"kern";
+    font-kerning: normal;
+    text-indent: 2em;
+
+    &::placeholder {
+      color: var(--g-1-2);
+      font-style: italic;
+    }
+
+    &:focus {
+      outline: none;
+      border: 1px solid var(--bg-border-active);
+      box-shadow: 0 0 10 0 var(--bg-border-active);
+    }
+  }
+
+  &__search__label {
+    display: block;
+    position: relative;
+    svg {
+      color: var(--g-1-3);
+      position: absolute;
+      left: 1em;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 1.8em;
+      z-index: 1;
+    }
+  }
+}
+
+.warcraft {
+  .nav {
+    &__list {
+      .find {
+        opacity: 1;
+        transform: translateY(-50%) translateX(-50%);
+      }
+      .close {
+        opacity: 0;
+        transform: translateY(50%) translateX(-50%);
+      }
+    }
+  }
+}
+
+.warcraft.searching {
+  .nav {
+    &__search {
+      transform: translateY(0) scaleY(1);
+      opacity: 0.9;
+    }
+    &__list {
+      .find {
+        opacity: 0;
+        transform: translateY(-150%) translateX(-50%);
+      }
+      .close {
+        opacity: 1;
+        transform: translateY(-50%) translateX(-50%);
+      }
+    }
+  }
+}
+
+
+.warcraft.fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+
+  .nav {
+    transform: translate( -50%, 0 );
+    animation: fixHeader 0s linear 0s forwards;
+    width: 100%;
+  }
+
+  .nav__bg {
+    margin-left: 0;
+  }
+
+  .nav__list {
+    height: var(--fixed-height);
+  }
+
+  .nav__title {
+    width: 4em;
+  }
+
+  .nav__logo.small {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .nav__logo.large {
+    opacity: 0;
+    transform: translateY(-50%) translateX(50%) scale(0);
+  }
+
+  .nav__search {
+    top: calc( var(--fixed-height) );
+    left: 0;
+  }
+}
+
+@media screen and ( max-width: 1300px ) {
+  .warcraft {
+    font-size: 0.9em;
+  }
+  .nav__list {
+    font-weight: 500;
+  }
+  .nav__search {
+  }
+}
+
+@media screen and ( max-width: 1100px ) {
+  .warcraft {
+    .nav__list {
+      height: var(--fixed-height);
+    }
+  }
+  .nav__search {
+    left: 0;
+    top: calc( var(--header-height) - 1em );
+  }
+
+}
+
+@media screen and ( max-width: 1000px ) {
+  .warcraft {
+    font-size: 0.75em;
+  }
+
+  .nav__bg {
+    margin-left: 0;
+  }
+
+  .nav__title {
+    width: 4em;
+  }
+
+  .nav__logo.small {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .nav__logo.large {
+    opacity: 0;
+    transform: translateY(-50%) translateX(50%) scale(0);
+  }
+
+  .nav__search {
+    top: calc( var(--header-height) - 0.35em );
+  }
+}
+
+
+@media screen and ( max-width: 800px ) {
+
+  .blizz {
+    position: fixed;
+    top: 0;
+  }
+
+  .warcraft {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: calc( var(--bar-height) + 1px );
+
+    .nav {
+      transform: translate( -50%, 0 );
+      animation: fixHeader 0s linear 0s forwards;
+      width: 100%;
+    }
+  }
+}
+
+
+@media screen and ( max-width: 660px ) {
+  .blizz {
+    display: none;
+  }
+
+  .warcraft {
+    font-size: 1em;
+    top: 0;
+
+    .nav__bg {
+      height: var(--fixed-height);
+    }
+
+    .nav__icon,
+    .nav__blizz {
+      opacity: 1;
+      transform: translate(-50%,-50%);
+    }
+    .nav__blizz {
+      transform: translate(0%,-50%);
+    }
+    &.open .nav__icon,
+    &.open .nav__blizz {
+      opacity: 0.5;
+    }
+
+    .nav__drawer {
+      position: fixed;
+      left: 0;
+      width: 320px;
+      max-width: calc( 100vw - 60px);
+      height: 100vh;
+      overflow-y: auto;
+      background-image: none;
+      box-shadow: inset 0 0 0 1px var(--bg-border),
+      20px 0 30px -20px #0009;
+      transition: all 0.33s ease, font 0s ease, height 0s ease;
+      transform: translateX(-120%);
+      z-index: 2;
+
+      &:after {
+        content: "";
+        background-image: url(https://assets.codepen.io/13471/blizzard_entertainment-logo.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 28vw;
+        height: auto;
+        aspect-ratio: 3;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: max(690px, 90%);
+        opacity: 0.2;
+      }
+    }
+
+    &.open .nav__drawer {
+      transform: translateX(0%);
+    }
+
+    .nav__burger,
+    .nav__close {
+      position: absolute;
+      left: 0;
+      top: 1.5em;
+      transform: translateY(-50%);
+      height: 3.6em;
+      width: auto;
+      aspect-ratio: 1;
+      color: var(--g-1-2);
+      display: block;
+      cursor: pointer;
+      padding: 1em;
+      z-index: 1;
+    }
+
+    .nav__title,
+    &.fixed .nav__title {
+      width: 100%;
+    }
+
+    .nav__logo.small {
+      display: none;
+    }
+
+    .nav__logo.large,
+    &.fixed .nav__logo.large {
+      opacity: 1;
+      transform: none;
+      position: relative;
+      margin: 1.5em 0 0;
+      width: 80%;
+      aspect-ratio: 2.55;
+    }
+
+    .nav__list {
+      flex-direction: column;
+      text-align: left;
+      justify-content: stretch;
+      align-items: stretch;
+    }
+
+    .nav__item {
+      margin: 0;
+    }
+
+    .nav__item:not(.nav__item--logo) {
+      flex-direction: column;
+      justify-content: stretch;
+    }
+
+    .nav__item > a,
+    .nav__item > button {
+      padding: 0.8em 1em;
+      border: none;
+      box-shadow: none;
+    }
+
+    .nav__item--logo {
+      margin-bottom: 90px;
+    }
+
+    .nav__item--sub,
+    .nav__item--try {
+      margin-top: 1em;
+      > a {
+        justify-content: center;
+        padding: 1.35em;
+      }
+    }
+
+    .nav__item--search {
+      display: none;
+    }
+
+    .nav__search {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: var(--nav-search-top)!important;
+      overflow: hidden;
+      padding: 1em 0;
+      height: auto;
+      background: transparent;
+      box-shadow: none;
+      border: 1px solid transparent;
+      z-index: 1;
+      transform: translateY(0) scaleY(1);
+      opacity: 0.9;
+    }
+
+    .nav__search__input {
+      padding: 1.15em 1em 1.15em 1.8em;
+    }
+
+    .nav__search__label {
+      svg {
+        height: 1.2em;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+.overlay {
+  background: #000000a6;
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  display: none;
+}
+
+.warcraft.open ~ .overlay {
+  display: block;
+  animation: overfade 0.3s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+
+@keyframes fixHeader {
+  0%,100% {
+    transform: translate( -50%, 0 );
+  }
+}
+
+@keyframes overfade {
+  100% {
+    opacity: 1;
+  }
+}
+
+main {
+  &.tbc {
+    --body: #a3fd00;
+    --bg: #1e2317;
+    --bg-border: #2c3518;
+    --bg-border-active: #526b34;
+    --g-1-1: #efd100;
+    --g-1-2: #e2a233;
+    --g-1-3: #f0c328;
+    --g-1-4: #deffa3;
+    --g-1-5: #a3ff34;
+    --sub-bg: #354401;
+    --try-bg: #31300f;
+    --sub-shadow: #7180295e;
+    --shadow: #74ff00;
+    --hover-shadow: drop-shadow(0 0 3px white) drop-shadow(0 -0.1em 0.5em var(--shadow)) drop-shadow(0 0.05em 0.05em black);
+    --logo-large: url(https://assets.codepen.io/13471/wow-logo-large-tbc.webp);
+    --logo-height: 7.9em;
+    --logo-aspect: 2.1;
+    --nav-search-top: clamp( 10px, 155px, 45vw );
+  }
+
+  &.wolk {
+    --body: #2b1a2f;
+    --bg: #181c22;
+    --bg-border: #303740;
+    --bg-border-active: #475c6b;
+    --g-1-1: #dbe0e8;
+    --g-1-2: #d6dee2;
+    --g-1-3: #b3bfcb;
+    --g-1-4: #c9d1d8;
+    --g-1-5: #73e5ff;
+    --sub-bg: #023553;
+    --try-bg: #142732;
+    --sub-shadow: #7dc0f13d;
+    --shadow: #61e9ffde;
+    --hover-shadow: drop-shadow(0 0 0.1em black) drop-shadow(0 0 0.22em var(--shadow)) drop-shadow(0 0 .66em var(--shadow)) drop-shadow(0 0.05em 0.05em black);
+    --logo-large: url(https://assets.codepen.io/13471/wow-logo-large-wolk.webp);
+    --logo-height: 7.5em;
+    --logo-aspect: 2.1;
+    --nav-search-top: clamp( 10px, 155px, 48vw );
+  }
+
+  &.mop {
+    --body: #2b1a2f;
+    --bg: #473529;
+    --bg-border: #6f5843;
+    --bg-border-active: #8b7664;
+    --g-1-5: #29eca3;
+    --sub-bg: #26402d;
+    --try-bg: #0d3120;
+    --sub-shadow: #90dea73d;
+    --shadow: #65ffd48f;
+    --hover-shadow: drop-shadow(0 0.05em 0.05em black) drop-shadow(0 0 0.05em var(--shadow)) drop-shadow(0 0 0.1em var(--shadow)) drop-shadow(0 0 0.4em var(--shadow)) drop-shadow(0 0.05em 0.05em black);
+    --logo-large: url(https://assets.codepen.io/13471/wow-logo-large-mop.webp);
+    --logo-height: 7.5em;
+    --logo-aspect: 2.1;
+    --nav-search-top: clamp( 10px, 155px, 48vw );
+
+    .nav__text {
+      background-image: linear-gradient(
+                      to bottom,
+                      var(--g-1-1) 0%,
+                      var(--g-1-2) 19%,
+                      var(--g-1-3) 30%,
+                      var(--g-1-4) 43%,
+                      var(--g-1-5) 50%,
+                      #fff 51%,
+                      #89ffb2 100%
+      );
+    }
+  }
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+body {
+  font-family: semplicitapro, sans-serif;
+  font-weight: 400;
+  color: white;
+  background-color: var(--body);
+  background-image: url(https://assets.codepen.io/13471/bg_masthead.webp), url(https://assets.codepen.io/13471/azeroth.jpg);
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat, repeat-y;
+  background-blend-mode: screen;
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url(https://cdn.pixabay.com/photo/2015/12/03/08/50/paper-1074131_1280.jpg);
+    background-size: cover;
+    background-position: center;
+    mix-blend-mode: multiply;
+    opacity: 0.75;
+  }
+}
+
+body, html {
+  height: 100%;
+}
+
+body {
+  min-height: 3000px;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  appearance: none;
+  background: none;
+  border: none;
+}
+
+svg {
+  fill: currentColor;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.switch {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+
+  input {
+    accent-color: var(--g-1-5);
+    font-size: 1.2em;
+    margin: 0 0.5em;
+  }
+
+  label {
+    margin: 0 1em;
+  }
+}
+
+.resize {
+  position: fixed;
+  left: 50%;
+  top: 66%;
+  transform: translate(-50%,-50%);
+  opacity: 0.5;
+  font-size: 1.3em;
+  text-align: center;
+  width: 90vw;
+  small {
+    display: block;
+    margin-top: 1em;
+  }
+}

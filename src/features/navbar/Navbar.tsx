@@ -73,8 +73,6 @@ const Navbar = () => {
     </button>
   );
 
-  const NavItems = () => <div></div>;
-
   return (
     <>
       <header className={styles.blizz} />
@@ -147,27 +145,27 @@ const Navbar = () => {
                   </li>
                   <li className={styles.nav__item}>
                     <a href="#">
-                      <span className={styles.nav__text}>Games</span>
+                      <span className={styles.nav__text}>MENS</span>
                     </a>
                   </li>
                   <li className={styles.nav__item}>
                     <a href="#">
-                      <span className={styles.nav__text}>News</span>
+                      <span className={styles.nav__text}>WOMENS</span>
                     </a>
                   </li>
                   <li className={styles.nav__item}>
                     <a href="#">
-                      <span className={styles.nav__text}>Forums</span>
+                      <span className={styles.nav__text}>KIDS</span>
                     </a>
                   </li>
                   <li className={styles.nav__item}>
                     <a href="#">
-                      <span className={styles.nav__text}>Shop</span>
+                      <span className={styles.nav__text}>ACCESSORIES</span>
                     </a>
                   </li>
                   <li className={styles.nav__item}>
                     <a href="#">
-                      <span className={styles.nav__text}>ESports</span>
+                      <span className={styles.nav__text}>FOOTWEAR</span>
                     </a>
                   </li>
                   <li
@@ -223,7 +221,7 @@ const Navbar = () => {
                     className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--try`}
                   >
                     <a href="#">
-                      <span className={styles.nav__text}>Try Free</span>
+                      <span className={styles.nav__text}>SUPPORT</span>
                     </a>
                   </li>
                 </ul>

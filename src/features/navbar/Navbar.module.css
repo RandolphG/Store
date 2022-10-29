@@ -236,7 +236,7 @@
 .nav__logo.large {
     aspect-ratio: var(--logo-aspect);
     background-image: var(--logo-large);
-    transform: translateY(-50%) translateX(calc( -0.7 * var(--logo-offset)  )) scale(1);
+    transform: translateY(-50%) translateX(calc( -0.7em * var(--logo-offset))) scale(1);
 }
 .nav__alt {
     position: absolute;

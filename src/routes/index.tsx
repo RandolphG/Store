@@ -2,6 +2,7 @@ import React, { FC, Suspense } from "react";
 import { RouteObject, useRoutes } from "react-router";
 import { Navbar } from "../features";
 import { PublicRoute } from "./helper";
+import { Checkout } from "../features/checkout";
 
 /*A route object has the same properties as a <Route>
 element. The `children` is just an array of child routes.*/
@@ -12,11 +13,11 @@ let index: RouteObject[] = [
     path: "/",
     element: (
       <PublicRoute>
-        <Navbar />
+        <Checkout />
       </PublicRoute>
     ),
     children: [
-      { index: true, element: <DEFAULT /> },
+      { index: true, element: <Checkout /> },
       { path: "/signIn", element: <div /> },
       { path: "/registration", element: <div /> },
     ],

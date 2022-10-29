@@ -73,6 +73,106 @@ const Navbar = () => {
     </button>
   );
 
+  const userOption = [
+    { style: "login", text: "Login In" },
+    { style: "sub", text: "Subscribe" },
+    { style: "try", text: "Support" },
+  ];
+
+  const UserOptions = () => (
+    <>
+      {userOption.map((option, idx) => (
+        <li
+          key={idx}
+          className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--${option.style}`}
+        >
+          <a href="#">
+            <span className={styles.nav__text}>{option.text}</span>
+          </a>
+        </li>
+      ))}
+    </>
+  );
+
+  const userCategory = [
+    { text: "MENS" },
+    { text: "WOMENS" },
+    { text: "KIDS" },
+    { text: "ACCESSORIES" },
+    { text: "FOOTWEAR" },
+  ];
+
+  const UserCategories = () => (
+    <>
+      {userCategory.map((category, idx) => (
+        <li key={idx} className={styles.nav__item}>
+          <a href="#">
+            <span className={styles.nav__text}>{category.text}</span>
+          </a>
+        </li>
+      ))}
+    </>
+  );
+
+  const Search = () => (
+    <li
+      className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--search`}
+      onClick={() => setSearch(!isSearch)}
+    >
+      <button>
+        <span className={styles.nav__text}>
+          <SvgFind />
+          <SvgClose />
+        </span>
+      </button>
+    </li>
+  );
+
+  const SvgClose = () => (
+    <svg
+      className={styles.close}
+      viewBox="0 0 24 24"
+      preserveAspectRatio="xMidYMid meet"
+      x="0"
+      y="0"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  );
+
+  const SvgFind = () => (
+    <svg
+      className={styles.find}
+      viewBox="0 0 68 68"
+      preserveAspectRatio="xMidYMid meet"
+      x="0"
+      y="0"
+    >
+      <g>
+        <path d="M40.985 0C28.284 0 17.961 10.324 17.961 23.023c0 4.805 1.484 9.268 4.013 12.965L.947 57.015a3.217 3.217 0 000 4.537l1.512 1.512a3.217 3.217 0 004.537 0l21.026-21.026a22.88 22.88 0 0012.963 4.012C53.677 46.051 64 35.713 64 23.023 64 10.324 53.677 0 40.985 0zm.001 39.239c-8.945 0-16.225-7.268-16.225-16.216 0-8.945 7.28-16.225 16.225-16.225s16.217 7.28 16.217 16.225c0 8.949-7.272 16.216-16.217 16.216z" />
+      </g>
+    </svg>
+  );
+
+  const SvgBurger = () => (
+    <svg
+      className="burger"
+      viewBox="0 0 48 48"
+      preserveAspectRatio="xMidYMid meet"
+      x="0"
+      y="0"
+    >
+      <path d="M24.12,25.48a5.16,5.16,0,1,1,5.16-5.16A5.16,5.16,0,0,1,24.12,25.48Zm0-8.47a3.31,3.31,0,1,0,3.31,3.31A3.32,3.32,0,0,0,24.12,17Z" />
+      <path d="M15.8,33V31.09a1.93,1.93,0,0,1,1.93-1.93H30.64a1.93,1.93,0,0,1,1.93,1.93V33h1.84V31.09a3.78,3.78,0,0,0-3.77-3.77H17.73A3.78,3.78,0,0,0,14,31.09V33H15.8Z" />
+    </svg>
+  );
+
   return (
     <>
       <header className={styles.blizz} />
@@ -91,35 +191,11 @@ const Navbar = () => {
               <HamburgerButton />
               <div className={styles.nav__drawer}>
                 <button className={styles.nav__close}>
-                  <svg
-                    className="close"
-                    viewBox="0 0 24 24"
-                    preserveAspectRatio="xMidYMid meet"
-                    x="0"
-                    y="0"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
+                  <SvgClose />
                 </button>
                 <div className={styles.nav__search}>
                   <label className={styles.nav__search__label}>
-                    <svg
-                      className="find"
-                      viewBox="0 0 68 68"
-                      preserveAspectRatio="xMidYMid meet"
-                      x="0"
-                      y="0"
-                    >
-                      <g>
-                        <path d="M40.985 0C28.284 0 17.961 10.324 17.961 23.023c0 4.805 1.484 9.268 4.013 12.965L.947 57.015a3.217 3.217 0 000 4.537l1.512 1.512a3.217 3.217 0 004.537 0l21.026-21.026a22.88 22.88 0 0012.963 4.012C53.677 46.051 64 35.713 64 23.023 64 10.324 53.677 0 40.985 0zm.001 39.239c-8.945 0-16.225-7.268-16.225-16.216 0-8.945 7.28-16.225 16.225-16.225s16.217 7.28 16.217 16.225c0 8.949-7.272 16.216-16.217 16.216z" />
-                      </g>
-                    </svg>
+                    <SvgFind />
                     <input
                       className={styles.nav__search__input}
                       placeholder="Search for characters, blogs, and more..."
@@ -143,108 +219,21 @@ const Navbar = () => {
                       </a>
                     </h1>
                   </li>
-                  <li className={styles.nav__item}>
-                    <a href="#">
-                      <span className={styles.nav__text}>MENS</span>
-                    </a>
-                  </li>
-                  <li className={styles.nav__item}>
-                    <a href="#">
-                      <span className={styles.nav__text}>WOMENS</span>
-                    </a>
-                  </li>
-                  <li className={styles.nav__item}>
-                    <a href="#">
-                      <span className={styles.nav__text}>KIDS</span>
-                    </a>
-                  </li>
-                  <li className={styles.nav__item}>
-                    <a href="#">
-                      <span className={styles.nav__text}>ACCESSORIES</span>
-                    </a>
-                  </li>
-                  <li className={styles.nav__item}>
-                    <a href="#">
-                      <span className={styles.nav__text}>FOOTWEAR</span>
-                    </a>
-                  </li>
-                  <li
-                    className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--search`}
-                    onClick={() => setSearch(!isSearch)}
-                  >
-                    <button>
-                      <span className={styles.nav__text}>
-                        <svg
-                          className="find"
-                          viewBox="0 0 68 68"
-                          preserveAspectRatio="xMidYMid meet"
-                          x="0"
-                          y="0"
-                        >
-                          <g>
-                            <path d="M40.985 0C28.284 0 17.961 10.324 17.961 23.023c0 4.805 1.484 9.268 4.013 12.965L.947 57.015a3.217 3.217 0 000 4.537l1.512 1.512a3.217 3.217 0 004.537 0l21.026-21.026a22.88 22.88 0 0012.963 4.012C53.677 46.051 64 35.713 64 23.023 64 10.324 53.677 0 40.985 0zm.001 39.239c-8.945 0-16.225-7.268-16.225-16.216 0-8.945 7.28-16.225 16.225-16.225s16.217 7.28 16.217 16.225c0 8.949-7.272 16.216-16.217 16.216z" />
-                          </g>
-                        </svg>
-                        <svg
-                          className="close"
-                          viewBox="0 0 24 24"
-                          preserveAspectRatio="xMidYMid meet"
-                          x="0"
-                          y="0"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <line x1="18" y1="6" x2="6" y2="18" />
-                          <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                      </span>
-                    </button>
-                  </li>
-                  <li
-                    className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--login`}
-                  >
-                    <a href="#">
-                      <span className={styles.nav__text}>Log In</span>
-                    </a>
-                  </li>
-                  <li
-                    className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--sub`}
-                  >
-                    <a href="#">
-                      <span className={styles.nav__text}>Subscribe</span>
-                    </a>
-                  </li>
-                  <li
-                    className={`${styles.nav__item} ${styles.nav__item}--alt ${styles.nav__item}--try`}
-                  >
-                    <a href="#">
-                      <span className={styles.nav__text}>SUPPORT</span>
-                    </a>
-                  </li>
+                  <UserCategories />
+                  <Search />
+                  <UserOptions />
                 </ul>
               </div>
             </div>
             <button className={styles.nav__blizz}>
-              <svg
-                className="burger"
-                viewBox="0 0 48 48"
-                preserveAspectRatio="xMidYMid meet"
-                x="0"
-                y="0"
-              >
-                <path d="M24.12,25.48a5.16,5.16,0,1,1,5.16-5.16A5.16,5.16,0,0,1,24.12,25.48Zm0-8.47a3.31,3.31,0,1,0,3.31,3.31A3.32,3.32,0,0,0,24.12,17Z" />
-                <path d="M15.8,33V31.09a1.93,1.93,0,0,1,1.93-1.93H30.64a1.93,1.93,0,0,1,1.93,1.93V33h1.84V31.09a3.78,3.78,0,0,0-3.77-3.77H17.73A3.78,3.78,0,0,0,14,31.09V33H15.8Z" />
-              </svg>
+              <SvgBurger />
             </button>
           </nav>
         </header>
         <div className={styles.overlay} />
         <div className={styles.switch}>
           <label>
-            <input type="radio" name="style" value="classic" checked={true} />
+            <input type="radio" name="style" value="classic" />
             Classic
           </label>
           <label>
@@ -252,7 +241,7 @@ const Navbar = () => {
             Crusade
           </label>
           <label>
-            <input type="radio" name="style" value="wolk" />
+            <input type="radio" name="style" value="wolk" checked={true} />
             Wrath
           </label>
           <label>

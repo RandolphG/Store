@@ -1,57 +1,13 @@
 // @ts-nocheck
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./Navbar.module.css";
-import $ from "jquery";
+import { useNavbar } from "./useNavbar";
+
 /**
  * Navbar
  */
 const Navbar = () => {
-  const [isSearch, setSearch] = useState<boolean>(false);
-
-  useEffect(() => {
-    /*const $win = $(window);
-    const $app = $("#app");
-    const $head = $(".warcraft");
-    const $nav = $(".nav");
-    const $burger = $(".nav__burger, .nav__close");
-    const $overlay = $(".overlay");
-    const $search_icon = $(".nav__item--search");
-    const $switch = $(".switch");
-    const top = parseInt(
-      getComputedStyle($nav.get(0))
-        .getPropertyValue("--header-top")
-        .replace("px", "")
-    );
-
-    const apply = () => {
-      if ($win.scrollTop() >= top) {
-        $head.addClass("fixed");
-      } else {
-        $head.removeClass("fixed");
-      }
-    };
-
-    $win.on("scroll", apply);
-    apply();
-
-    $search_icon.on("click", () => {
-      $head.toggleClass("searching");
-    });
-
-    $burger.on("click", () => {
-      $head.toggleClass("open");
-    });
-
-    $overlay.on("click", () => {
-      $head.removeClass("open");
-    });
-
-    $switch.on("change", "input", (e) => {
-      const style = $(e.currentTarget).val();
-      $app.removeClass("classic wolk tbc mop").addClass(style);
-    });*/
-  });
-
+  const { isSearch, setSearch } = useNavbar();
   const HamburgerButton = () => (
     <button className={styles.nav__burger}>
       <svg
@@ -231,7 +187,7 @@ const Navbar = () => {
           </nav>
         </header>
         <div className={styles.overlay} />
-        <div className={styles.switch}>
+        {/* <div className={styles.switch}>
           <label>
             <input type="radio" name="style" value="classic" />
             Classic
@@ -248,7 +204,7 @@ const Navbar = () => {
             <input type="radio" name="style" value="mop" />
             Mists
           </label>
-        </div>
+        </div>*/}
       </main>
       <div className={styles.resize}>
         Try resizing your browser for responsiveness, <br />

@@ -13,7 +13,7 @@ let index: RouteObject[] = [
     path: "/",
     element: (
       <PublicRoute>
-        <Checkout />
+        <Navbar />
       </PublicRoute>
     ),
     children: [

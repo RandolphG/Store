@@ -17,7 +17,7 @@ export const notificationsSlice = createSlice({
     ) => {
       return {
         ...state,
-        notifications: add(state.notifications, action.payload),
+        notifications: add(state.notifications, action.payload) as string[],
       };
     },
     requestRemoveNotification: (

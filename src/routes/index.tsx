@@ -1,26 +1,25 @@
 import React, { FC, Suspense } from "react";
 import { RouteObject, useRoutes } from "react-router";
-import { Navbar } from "../features";
+import { ProductPage, ProductDetails } from "../features";
 import { PublicRoute } from "./helper";
-import { Checkout } from "../features/checkout";
 
-/*A route object has the same properties as a <Route>
-element. The `children` is just an array of child routes.*/
-const DEFAULT = () => <div>DEFAULT</div>;
-
+/*A route object has the same properties as a <Route>.*/
 let index: RouteObject[] = [
   {
     path: "/",
     element: (
       <PublicRoute>
-        <Navbar />
+        <ProductPage />
       </PublicRoute>
     ),
-    children: [
-      { index: true, element: <Checkout /> },
-      { path: "/signIn", element: <div /> },
-      { path: "/registration", element: <div /> },
-    ],
+  },
+  {
+    path: "/products/:id",
+    element: (
+      <PublicRoute>
+        <ProductDetails />
+      </PublicRoute>
+    ),
   },
   { path: "*", element: <div /> },
 ];

@@ -1,8 +1,4 @@
-export type link = {
-  link: string;
-  onClick: () => number | void;
-};
-
+/* NOTIFICATION TYPES*/
 export interface INotificationsPayload {
   title: Notification;
 }

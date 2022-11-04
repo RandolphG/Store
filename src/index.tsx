@@ -1,7 +1,9 @@
+import { AnimatePresence } from "framer-motion";
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+import { Notifications } from "./features";
 import reportWebVitals from "./reportWebVitals";
 import Routes from "./routes";
 import { HashRouter as Router } from "react-router-dom";
@@ -10,13 +12,14 @@ const container = document.getElementById("root")!;
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
+    <Notifications />
+    <AnimatePresence initial={false} mode={"wait"}>
       <Router>
         <Routes />
       </Router>
-    </Provider>
-  </React.StrictMode>
+    </AnimatePresence>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

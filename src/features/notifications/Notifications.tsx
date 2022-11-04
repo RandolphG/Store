@@ -1,24 +1,25 @@
-// @ts-nocheck
-import React from "react";
+import React, { ReactPortal } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Notifications.Styles.scss";
 import { useNotifications } from "./useNotifications";
 
 /**
- * Notifications.
+ * Notifications
+ * @description simple notification message
+ * @return ReactPortal
  * */
-const Notifications = () => {
+const Notifications = (): ReactPortal => {
   const { motionSettings, remove, notifications } = useNotifications();
 
   return createPortal(
-    <div className="notification">
+    <div key={"notifications"} className="notification">
       <div className="notification_container">
         <ul className="notification_container_list">
           <AnimatePresence initial={false}>
             {notifications &&
-              notifications.map((notification: any, idx: number) => {
-                remove(notification.message);
+              notifications.map((notification, idx: number) => {
+                remove(notification);
                 return (
                   <motion.li
                     className="notification_container_list_item"
@@ -26,7 +27,7 @@ const Notifications = () => {
                     {...motionSettings}
                   >
                     <span className="notification_container_list_item_message">
-                      {notification.message}
+                      {notification}
                     </span>
                   </motion.li>
                 );
@@ -35,7 +36,7 @@ const Notifications = () => {
         </ul>
       </div>
     </div>,
-    document.getElementById("notifications")
+    document.getElementById("notifications") as Element | DocumentFragment
   );
 };
 

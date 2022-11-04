@@ -1,3 +1,5 @@
 export * from "./counter";
-export * from "./navbar";
 export * from "./notifications";
+export * from "./productsPage";
+export * from "./productDetails";
+export * from "./cart";

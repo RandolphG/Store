@@ -1,6 +1,6 @@
 import React, { FC, Suspense } from "react";
 import { RouteObject, useRoutes } from "react-router";
-import { ProductPage, ProductDetails } from "../features";
+import { ProductPage, ProductDetails, Slider } from "../features";
 import { PublicRoute } from "./helper";
 
 /*A route object has the same properties as a <Route>.*/

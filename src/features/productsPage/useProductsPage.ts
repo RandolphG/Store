@@ -14,7 +14,7 @@ export const useProductsPage = () => {
 
   useEffect(() => {
     getServerProps().then((_r) => console.log("Done"));
-  });
+  }, []);
 
   async function getServerProps(): Promise<Products> {
     try {
@@ -43,6 +43,7 @@ export const useProductsPage = () => {
 
   const handleAddProduct = (product: Product) => {
     dispatch(requestAddProduct(product));
+    dispatch(requestAddNotification(`${product.title} Added`));
   };
 
   return { products, handleSetProductDetails, handleAddProduct, items };

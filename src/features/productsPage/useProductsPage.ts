@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../utils";
+import { requestAddProduct, selectCart } from "../cart";
 import { requestAddNotification } from "../notifications";
+import { requestSetProductDetails } from "../productDetails";
 import { requestSetProducts } from "./ProductSlice";
-import { Products } from "../../types";
+import { Product, Products } from "../../types";
 
 export const useProductsPage = () => {
   const dispatch = useDispatch();
+  const items = useSelector(selectCart);
   const [products, setProducts] = useState<Products>([]);
 
   useEffect(() => {
@@ -26,10 +29,21 @@ export const useProductsPage = () => {
     }
   }
 
-  const handBuyClicked = () => {
-    console.log("CLICKED_BUY:");
-    // dispatch();
+  /**
+   * handleSetProductDetails
+   * @param product
+   */
+  const handleSetProductDetails = (product: Product) => {
+    dispatch(requestSetProductDetails(product));
+  };
+  /**
+   * handleSetProductDetails
+   * @param product
+   */
+
+  const handleAddProduct = (product: Product) => {
+    dispatch(requestAddProduct(product));
   };
 
-  return { products };
+  return { products, handleSetProductDetails, handleAddProduct, items };
 };

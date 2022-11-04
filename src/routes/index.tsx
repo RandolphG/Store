@@ -14,7 +14,7 @@ let index: RouteObject[] = [
     ),
   },
   {
-    path: "/products/:id",
+    path: "/:id",
     element: (
       <PublicRoute>
         <ProductDetails />

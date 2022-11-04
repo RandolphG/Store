@@ -3,8 +3,9 @@ import { RootState } from "../../app/store";
 import { Product, ProductsDetailsState } from "../../types";
 
 const initialState: ProductsDetailsState = {
-  detail: {
-    productId: "857b2ae73205",
+  product: {
+    id: "857b2ae73205",
+    price: 12.99,
     title: "Officia",
     images: [
       {
@@ -49,6 +50,9 @@ const initialState: ProductsDetailsState = {
           {
             value: "28",
           },
+          {
+            value: "36",
+          },
         ],
       },
       {
@@ -74,20 +78,23 @@ export const productsDetailsSlice = createSlice({
   name: "productDetails",
   initialState,
   reducers: {
-    requestSetProducts: (
+    requestSetProductDetails: (
       state: ProductsDetailsState,
       action: PayloadAction<Product>
     ) => {
+      console.log("%cSTATE -->", state);
+      console.log("%cACTION -->", "color:yellow;", action.payload);
       return {
         ...state,
-        detail: action.payload,
+        product: action.payload,
       };
     },
   },
 });
 
-export const selectProductDetail = (state: RootState) => state.productDetails;
+export const selectProductDetail = (state: RootState) =>
+  state.productDetails.product;
 
-export const {} = productsDetailsSlice.actions;
+export const { requestSetProductDetails } = productsDetailsSlice.actions;
 
 export default productsDetailsSlice.reducer;

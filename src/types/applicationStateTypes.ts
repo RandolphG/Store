@@ -2,7 +2,7 @@
 import { Product } from "./productTypes";
 
 export interface ProductsDetailsState {
-  detail: Product;
+  product: Product;
 }
 
 export interface ProductsState {

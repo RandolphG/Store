@@ -9,13 +9,13 @@ export function removeItem<T>([...arr]: T[], item: T) {
 
 /* remove notification from array */
 export const remove = (arr: string[], id: string) => {
-  const notificationsArray = [...arr];
-  notificationsArray.splice(
-    notificationsArray.findIndex((notification) => notification === id),
+  const bufferArray = [...arr];
+  bufferArray.splice(
+    bufferArray.findIndex((notification) => notification === id),
     1
   );
 
-  return notificationsArray;
+  return bufferArray;
 };
 
 /* add notification to array */

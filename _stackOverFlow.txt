@@ -1,0 +1,49 @@
+How TO SET PARENT NODE STYLE IN REACT ------------------------->
+    const node = useRef(null);
+    ...
+    <div ref={node} onLoad={() => {
+        node.current.parentNode.style.background = 'yellow';
+    }} />
+
+    WITH PROPS ------------------------------------------------>
+    import React, { useState, useEffect, useRef } from "react";
+
+    const ParentComponent = () => {
+    const [height, setHeight] = useState(null)
+    const node = useRef(null)
+
+    return (
+        <div
+            style={{
+            ...(height ? { height: `${height}px` } : {}),
+            backgroundColor: 'yellow',
+            position: 'relative'
+        }}>
+            <MyComponent setHeight={setHeight} node={node} />
+        </div>
+        )
+    }
+
+    const MyComponent = ({ setHeight, node }) => {
+        useEffect(() => {
+        const childHeight = node.current ? node.current.offsetHeight : 0
+
+        setHeight(childHeight), [node.current]
+    })
+
+    // sample parent updates when child updates
+    const [content, setContent] = useState(['child'])
+        useEffect(
+            () => setTimeout(() => setContent([...content, 'child']), 1000),
+        [content]
+        )
+
+
+    return (
+        <div style={{ position: 'absolute', top: 0, left: 0 }} ref={node}>
+            {content.map((item, i) => (
+            <div key={i}>{item + i}</div>
+            ))}
+        </div>
+        )
+    }

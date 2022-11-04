@@ -1,0 +1,118 @@
+* {
+  font: inherit;
+}
+
+.wrap {
+  border: yellow 4px solid;
+  display: grid;
+  grid-template: repeat(2, max-content) 3em/1fr 1fr;
+  margin: 1em auto;
+  width: 20em;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(0deg, #ccc 4em, transparent 0);
+  --diff: calc(var(--max) - var(--min));
+}
+
+.wrap::after, .wrap::before {
+  content: "";
+  background: #95a;
+  grid-column: 1/span 2;
+  grid-row: 3;
+  height: 100%;
+}
+
+.wrap::after {
+  margin-left: calc((var(--b) - var(--min)) / var(--diff) * 100%);
+  width: calc((var(--a) - var(--b)) / var(--diff) * 100%);
+}
+
+.wrap::before {
+  margin-left: calc((var(--a) - var(--min)) / var(--diff) * 100%);
+  width: calc((var(--b) - var(--a)) / var(--diff) * 100%);
+}
+
+.sr-only {
+  position: absolute;
+  clip-path: inset(50%);
+}
+
+input[type=range] {
+  grid-column: 1/span 2;
+  grid-row: 3;
+  background: none;
+  --col: #000;
+  font: inherit;
+  margin: 0;
+  pointer-events: none;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+input[type=range]:focus {
+  z-index: 2;
+  outline: dotted 1px currentcolor;
+}
+
+input[type=range]:focus, input[type=range]:focus + output {
+  --col: darkorange;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  background: none;
+  /* get rid of Firefox track background */
+  height: 100%;
+  width: 100%;
+}
+
+input[type=range]::-webkit-slider-runnable-track, input[type=range]::-webkit-slider-thumb, input[type=range] {
+  -webkit-appearance: none;
+}
+
+input[type=range]::-moz-range-track {
+  background: none;
+  /* get rid of Firefox track background */
+  height: 100%;
+  width: 100%;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  border: none;
+  /* get rid of Firefox thumb border */
+  width: 2em;
+  height: 4em;
+  border-radius: 0;
+  /* get rid of Firefox corner rounding */
+  background: linear-gradient(90deg, #fff 2px, transparent 0) calc(1em - 1px), radial-gradient(circle, var(--col) calc(1em - 1px), transparent 1em);
+  pointer-events: auto;
+}
+
+input[type=range]::-moz-range-thumb {
+  border: none;
+  /* get rid of Firefox thumb border */
+  width: 2em;
+  height: 4em;
+  border-radius: 0;
+  /* get rid of Firefox corner rounding */
+  background: linear-gradient(90deg, #fff 2px, transparent 0) calc(1em - 1px), radial-gradient(circle, var(--col) calc(1em - 1px), transparent 1em);
+  pointer-events: auto;
+}
+
+output {
+  grid-row: 2;
+  color: var(--col);
+}
+
+output:last-child {
+  text-align: right;
+}
+
+output::after {
+  counter-reset: c var(--c);
+  content: "--" attr(for) ": " counter(c) ";";
+}
+
+[id=multi-lbl] {
+  grid-column: 1/span 2;
+}

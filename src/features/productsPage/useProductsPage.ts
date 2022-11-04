@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../utils";
-import { requestAddProduct, selectCart } from "../cart";
+import { requestAddProduct, selectCartItems } from "../cart";
 import { requestAddNotification } from "../notifications";
 import { requestSetProductDetails } from "../productDetails";
 import { requestSetProducts } from "./ProductSlice";
@@ -9,7 +9,7 @@ import { Product, Products } from "../../types";
 
 export const useProductsPage = () => {
   const dispatch = useDispatch();
-  const items = useSelector(selectCart);
+  const items = useSelector(selectCartItems);
   const [products, setProducts] = useState<Products>([]);
 
   useEffect(() => {

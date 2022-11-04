@@ -1,6 +1,6 @@
 import React, { FC, Suspense } from "react";
 import { RouteObject, useRoutes } from "react-router";
-import { ProductPage, ProductDetails, Slider } from "../features";
+import { ProductPage, ProductDetails, Cart } from "../features";
 import { PublicRoute } from "./helper";
 
 /*A route object has the same properties as a <Route>.*/
@@ -18,6 +18,14 @@ let index: RouteObject[] = [
     element: (
       <PublicRoute>
         <ProductDetails />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/cart",
+    element: (
+      <PublicRoute>
+        <Cart />
       </PublicRoute>
     ),
   },

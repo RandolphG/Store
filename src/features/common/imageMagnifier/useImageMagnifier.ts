@@ -1,232 +1,139 @@
-import $ from "jquery";
 import { useEffect } from "react";
 
 export const useImageMagnifier = () => {
   useEffect(() => {
-    const loupe = document.querySelector(".loupe");
-    const loupeWidth = getComputedStyle(loupe!).width;
-    const loupeHeight = getComputedStyle(loupe!).height;
-    /*@ts-ignore*/
-    const loupeOffsetTop = loupe.offsetTop;
-    /*@ts-ignore*/
-    const loupeOffsetLeft = loupe.offsetLeft;
-
-    const container = document.querySelector("img");
-    if (container) {
-      /*@ts-ignore*/
-      container.addEventListener("mouseenter", handleMouseEnter);
-      /*@ts-ignore*/
-      container.addEventListener("mouseleave", handleMouseLeave);
-    }
+    /**
+     * parseHTML
+     * @description most efficient way to add HTML, faster than innerHTML
+     * @param htmlStr
+     * @return DocumentFragment
+     */
+    const parseHTML = (htmlStr: string) => {
+      const range = document.createRange();
+      range.selectNode(document.body); // required in Safari
+      return range.createContextualFragment(htmlStr);
+    };
 
     /**
-     * handleMouseLeave
+     * makeImgMagnified
+     * @description pass this function any image element to add magnifying functionality
+     * @param img
+     * @return void
      */
-    function handleMouseLeave() {
-      fadeOut(loupe);
-    }
+    const makeImgMagnified = (img: HTMLImageElement) => {
+      const magnifierFragment = parseHTML(`
+    <div class="magnifier-container">
+      <div class="magnifier">
+        <img alt="magnifier" class="magnifier__img" src="${img.src}"/>
+      </div>
+    </div>
+  `);
 
-    /**
-     * handleMouseEnter
-     * @param {MouseEvent} event
-     */
-    function handleMouseEnter(event: MouseEvent) {
-      // document.addEventListener("mousemove", handleMouseMove);
-      if (container) {
-        /*@ts-ignore*/
-        container.addEventListener("mousemove", handleMouseMove);
-      }
-
-      let loaded: boolean = false;
-      const currImage: EventTarget | null = event.target;
-      /*@ts-ignore*/
-      const currImageSrc = currImage.currentSrc;
-      /*@ts-ignore*/
-      const currImageWidth = event.target.clientWidth;
-      /*@ts-ignore*/
-      const currImageHeight = event.target.clientHeight;
-
-      console.log("\n%cEVENT_MOUSE_ENTER :", "background:black;color:yellow;");
-      console.log("%cEVENT :", "background:black;color:orange;", event);
-      console.log(
-        "%cCURRENT_IMAGE :",
-        "background:black;color:lightblue;" /*@ts-ignore*/,
-        currImage
+      /*This preserves the original element reference instead of cloning it.*/
+      img.parentElement!.insertBefore(magnifierFragment, img);
+      const magnifierContainerEl = document.querySelector(
+        ".magnifier-container"
       );
-      console.log(
-        "%cIMAGE_SRC :",
-        "background:black;color:pink;" /*@ts-ignore*/,
-        currImageSrc,
-        "\n\tWIDTH :",
-        currImageHeight,
-        "\n\tHEIGHT :",
-        currImageWidth
-      );
+      img.remove();
+      magnifierContainerEl!.appendChild(img);
 
-      const newImage = new Image();
-      newImage.src = currImageSrc;
-      newImage.onload = (img) => {
-        loaded = true;
-        /*@ts-ignore*/
-        img.target!.width = currImageWidth * 2;
-        /*@ts-ignore*/
-        img.target!.height = currImageHeight * 2;
-        /*@ts-ignore*/
+      /*query the DOM for the newly added elements*/
+      const magnifierEl = magnifierContainerEl!.querySelector(".magnifier");
+      const magnifierImg = magnifierEl!.querySelector(".magnifier__img");
+
+      /*set up the transform object to be mutated as mouse events occur*/
+      const transform = {
+        translate: [0, 0],
+        scale: 1,
       };
 
-      fadeIn(loupe);
+      /**
+       * setTransformStyle
+       * @description shortcut function to set the transform css property
+       * @param el
+       * @param translate
+       * @param scale
+       */
+      const setTransformStyle = (el: any, { translate, scale }: any) => {
+        const [xPercent, yRawPercent] = translate;
+        const yPercent = yRawPercent < 0 ? 0 : yRawPercent;
+
+        /*make manual pixel adjustments to better center
+        the magnified area over the cursor.*/
+        const [xOffset, yOffset] = [
+          `calc(-${xPercent}% + 250px)`,
+          `calc(-${yPercent}% + 70px)`,
+        ];
+
+        el.style = `
+      transform: scale(${scale}) translate(${xOffset}, ${yOffset});
+    `;
+      };
 
       /**
        * handleMouseMove
-       * @param {MouseEvent} event
+       * @descriptionshow magnified thumbnail on hover
+       * @param event
        * @return void
        */
-      function handleMouseMove(event: MouseEvent) {
-        console.log("EVENT", event);
-        const currImage: EventTarget | null = event.target;
-        /*@ts-ignore*/
-        const currImageOffsetTop = currImage.offsetTop;
-        /*@ts-ignore*/
-        const currImageOffsetLeft = currImage.offsetLeft;
+      const handleMouseMove = (event: MouseEvent) => {
+        const [mouseX, mouseY] = [event.pageX + 40, event.pageY - 20];
+        const { top, left, bottom, right } = img.getBoundingClientRect();
+        transform.translate = [
+          ((mouseX - left) / right) * 100,
+          ((mouseY - top) / bottom) * 100,
+        ];
 
         /*@ts-ignore*/
-        const fx: number = currImageOffsetLeft - parseInt(loupeWidth) / 2;
+        magnifierEl.style = `
+      display: block;
+      top: ${mouseY}px;
+      left: ${mouseX}px;
+    `;
+        setTransformStyle(magnifierImg, transform);
+      };
+
+      img.addEventListener("mousemove", handleMouseMove);
+
+      /**
+       * handleMouseWheel
+       * @description zoom in/out with mouse wheel
+       * @param event
+       * @return void
+       */
+      const handleMouseWheel = (event: WheelEvent) => {
+        event.preventDefault();
+        const scrollingUp = event.deltaY < 0;
+        const { scale } = transform;
+        transform.scale =
+          scrollingUp && scale < 3
+            ? scale + 0.1
+            : !scrollingUp && scale > 1
+            ? scale - 0.1
+            : scale;
+        setTransformStyle(magnifierImg, transform);
+      };
+
+      img.addEventListener("wheel", handleMouseWheel);
+
+      /**
+       * handleMouseLeave
+       * @description remove element
+       * @return void
+       */
+      const handleMouseLeave = () => {
         /*@ts-ignore*/
-        const fy: number = currImageOffsetTop - parseInt(loupeHeight) / 2;
-        const fh: number =
-          /*@ts-ignore*/
-          currImageOffsetTop + currImageHeight + parseInt(loupeHeight) / 2;
+        magnifierEl.style = "";
         /*@ts-ignore*/
-        const fw =
-          currImageOffsetLeft + currImageWidth + parseInt(loupeWidth) / 2;
+        magnifierImg.style = "";
+      };
 
-        /*@ts-ignore*/
-        loupe.style.left = event.pageX - 75;
-        /*@ts-ignore*/
-        loupe.style.top = event.pageY - 75;
+      /*reset after mouse leaves*/
+      img.addEventListener("mouseleave", handleMouseLeave);
+    };
 
-        const lx = loupeOffsetLeft;
-        const ly = loupeOffsetTop;
-        const lw = lx + parseInt(loupeWidth);
-        const lh = ly + parseInt(loupeHeight);
-        const bigy = (ly - parseInt(loupeHeight) / 4 - fy) * 2;
-        const bigx = (lx - parseInt(loupeWidth) / 4 - fx) * 2;
-
-        newImage.style.left = String(-bigx);
-        if (lx < fx || lh > fh || ly < fy || lw > fw) {
-          console.log("TRUE");
-          newImage.remove();
-          /*@ts-ignore*/
-          container.removeEventListener("mousemove", handleMouseMove);
-          // $loupe.fadeOut(100);
-        }
-      }
-    }
-
-    /*
-    const $loupe = $(".loupe");
-    const loupeWidth = $loupe.width();
-    const loupeHeight = $loupe.height();
-
-    $(document).on("mouseenter", ".image", function (e) {
-      const $currImage = $(this);
-      const $img = $("<img/>")
-        .attr("src", $("img", this).attr("src"))
-        .css({
-          width: $currImage.width() * 2,
-          height: $currImage.height() * 2,
-        });
-
-      $loupe.html($img).fadeIn(100);
-
-      $(document).on("mousemove", moveHandler);
-
-      function moveHandler(e: any) {
-        const imageOffset = $currImage.offset();
-        const fx = imageOffset.left - loupeWidth / 2;
-        const fy = imageOffset.top - loupeHeight / 2;
-        const fh = imageOffset.top + $currImage.height() + loupeHeight / 2;
-        const fw = imageOffset.left + $currImage.width() + loupeWidth / 2;
-
-        $loupe.css({
-          left: e.pageX - 75,
-          top: e.pageY - 75,
-        });
-
-        const loupeOffset = $loupe.offset();
-        const lx = loupeOffset.left;
-        const ly = loupeOffset.top;
-        const lw = lx + loupeWidth;
-        const lh = ly + loupeHeight;
-        const bigy = (ly - loupeHeight / 4 - fy) * 2;
-        const bigx = (lx - loupeWidth / 4 - fx) * 2;
-
-        $img.css({ left: -bigx, top: -bigy });
-
-        if (lx < fx || lh > fh || ly < fy || lw > fw) {
-          $img.remove();
-          $(document).off("mousemove", moveHandler);
-          $loupe.fadeOut(100);
-        }
-      }
-    });*/
-
-    /**
-     * resizeImg
-     * @param img
-     * @param height
-     * @param width
-     * @param scale
-     * @return void
-     * https://stackoverflow.com/questions/1297449/change-image-size-with-javascript
-     */
-    function resizeImg(
-      img: HTMLImageElement,
-      height: number,
-      width: number,
-      scale: number = 1
-    ) {
-      if (height && width) {
-        img.height = parseInt(String(scale * height));
-        img.width = parseInt(String(scale * width));
-      }
-    }
-
-    /**
-     * fadeIn
-     * @param element
-     * @return void
-     */
-    function fadeIn(element: any) {
-      let opacity = 0.1; // initial opacity
-      element.style.display = "block";
-      let timer = setInterval(function () {
-        if (opacity >= 1) {
-          clearInterval(timer);
-        }
-        element.style.opacity = opacity;
-        element.style.filter = "alpha(opacity=" + opacity * 100 + ")";
-        opacity += opacity * 0.1;
-      }, 5);
-    }
-
-    /**
-     * fadeOut
-     * @param element
-     */
-    function fadeOut(element: any) {
-      let opacity = 1; // initial opacity
-      let timer = setInterval(function () {
-        if (opacity <= 0.1) {
-          clearInterval(timer);
-          element.style.display = "none";
-        }
-        element.style.opacity = opacity;
-        element.style.filter = "alpha(opacity=" + opacity * 100 + ")";
-        opacity -= opacity * 0.1;
-      }, 50);
-    }
-  });
-
+    const img = <HTMLImageElement>document.querySelector(".image-preview-js");
+    makeImgMagnified(img);
+  }, []);
   return {};
 };

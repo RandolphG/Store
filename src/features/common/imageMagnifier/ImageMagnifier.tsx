@@ -8,18 +8,13 @@ import { useImageMagnifier } from "./useImageMagnifier";
 const ImageMagnifier = () => {
   useImageMagnifier();
   return (
-    <>
-      <div id="container">
-        <div className="image">
-          <img
-            className="selectedImg"
-            alt="image"
-            src="https://images-na.ssl-images-amazon.com/images/I/614RBksGdwL._AC_SX425_.jpg"
-          />
-        </div>
-      </div>
-      <div className="loupe" />
-    </>
+    <div className="imageContainer">
+      <img
+        alt="image-preview"
+        className="image-preview image-preview-js"
+        src="https://assets.petco.com/petco/image/upload/f_auto,q_auto/2668223-center-1"
+      />
+    </div>
   );
 };
 

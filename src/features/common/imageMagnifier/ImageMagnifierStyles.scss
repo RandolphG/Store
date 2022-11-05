@@ -1,33 +1,32 @@
-#container {
-  display: flex;
-  justify-content: center;
-  border: #a3ff34 solid 2px;
 
+.imageContainer{
+background: black;
 }
 
-.image {
-  border: #a3ff34 solid 2px;
-
-  max-width: 300px;
-  margin: 25px;
-  img {
-    max-width: 100%;
-    border: #5c1105 solid 2px;
-  }
+.image-preview {
+  height: 300px;
+  cursor: zoom-in;
 }
 
-.loupe {
-  border: #a3ff34 solid 2px;
+.magnifier-container {
+  display: inline-block;
+  position: relative;
+}
+
+.magnifier {
   display: none;
   position: absolute;
-  width: 200px;
-  height: 200px;
-  //border: 1px solid black;
-  box-shadow: 5px 5px 12px black;
-  background: rgba(0, 0, 0, 0.25);
-  cursor: crosshair;
+  top: 0;
+  left: 100%;
   overflow: hidden;
-  img {
-    position: absolute;
-  }
+  height: 300px;
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.magnifier__img {
+  width: 1000px;
+  transform-origin: 150px 150px;
 }

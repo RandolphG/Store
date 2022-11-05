@@ -4,7 +4,7 @@ import { getProducts } from "../../utils";
 import { requestAddProduct, selectCartItems } from "../cart";
 import { requestAddNotification } from "../notifications";
 import { requestSetProductDetails } from "../productDetails";
-import { requestSetProducts } from "./ProductSlice";
+import { requestSetLoaded, requestSetProducts } from "./ProductSlice";
 import { Product, Products } from "../../types";
 
 export const useProductsPage = () => {
@@ -13,7 +13,7 @@ export const useProductsPage = () => {
   const [products, setProducts] = useState<Products>([]);
 
   useEffect(() => {
-    getServerProps().then((_r) => console.log("Done"));
+    getServerProps().then((_r) => console.log("Done:"));
   }, []);
 
   async function getServerProps(): Promise<Products> {
@@ -22,6 +22,7 @@ export const useProductsPage = () => {
       setProducts(serverSideProps);
       dispatch(requestSetProducts(serverSideProps));
       dispatch(requestAddNotification("PRODUCTS FETCHED"));
+      dispatch(requestSetLoaded());
       return serverSideProps;
     } catch (error: any) {
       console.log(error.message());
@@ -46,5 +47,10 @@ export const useProductsPage = () => {
     dispatch(requestAddNotification(`${product.title} Added`));
   };
 
-  return { products, handleSetProductDetails, handleAddProduct, items };
+  return {
+    products,
+    handleSetProductDetails,
+    handleAddProduct,
+    items,
+  };
 };

@@ -47,3 +47,14 @@ How TO SET PARENT NODE STYLE IN REACT ------------------------->
         </div>
         )
     }
+
+How TO DEFINE CSS VARIABLES IN STYLE ATTRIBUTE IN REACT/TYPESCRIPT
+    function Component() {
+        const style = { "--my-css-var": 10 } as React.CSSProperties;
+        return <div style={style}>...</div>
+    }
+
+    //Or without the extra style variable:
+    function Component() {
+        return <div style={{ "--my-css-var": 10 } as React.CSSProperties} />
+    }

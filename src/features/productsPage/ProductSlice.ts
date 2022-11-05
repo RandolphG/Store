@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
 import { Products, ProductsState } from "../../types";
 
 const initialState: ProductsState = {
   products: [],
+  loaded: false,
 };
 
 export const productsSlice = createSlice({
@@ -19,11 +19,19 @@ export const productsSlice = createSlice({
         products: action.payload,
       };
     },
+    requestSetLoaded: (state: ProductsState, _action: PayloadAction) => {
+      return {
+        ...state,
+        loaded: true,
+      };
+    },
   },
 });
 
-export const selectProducts = (state: RootState) => state.products;
+export const selectProducts = (state: ProductsState) => state.products;
 
-export const { requestSetProducts } = productsSlice.actions;
+export const selectLoaded = (state: ProductsState) => state.loaded;
+
+export const { requestSetProducts, requestSetLoaded } = productsSlice.actions;
 
 export default productsSlice.reducer;

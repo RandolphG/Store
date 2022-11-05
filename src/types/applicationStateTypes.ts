@@ -7,4 +7,5 @@ export interface ProductsDetailsState {
 
 export interface ProductsState {
   products: Product[];
+  loaded: boolean;
 }

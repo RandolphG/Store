@@ -1,5 +1,6 @@
 import { Notification } from "../features";
 import { Product, Products } from "../types";
+import { dummyProductData } from "./data";
 
 export const defaultUrl = "https://via.placeholder.com/350?text=No+Image";
 export const defaultAlt = "A placeholder to replace a missing product image.";
@@ -196,3 +197,5 @@ export const slideOut = {
     transition,
   },
 };
+
+export { dummyProductData };

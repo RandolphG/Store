@@ -4,6 +4,7 @@ export type Products = Product[];
 export interface Product {
   id: string;
   title: string;
+  category: string[];
   price: number;
   images: Image[];
   about: string;

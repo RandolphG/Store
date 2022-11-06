@@ -1,6 +1,11 @@
 import React from "react";
 import "./ImageMagnifierStyles.scss";
 import { useImageMagnifier } from "./useImageMagnifier";
+
+type props = {
+  children: JSX.Element | JSX.Element[];
+};
+
 /**
  * ImageMagnifier
  * @description magnify targeted image

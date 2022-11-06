@@ -72,7 +72,7 @@ export const useImageMagnifier = () => {
 
       /**
        * handleMouseMove
-       * @descriptionshow magnified thumbnail on hover
+       * @description show magnified thumbnail on hover
        * @param event
        * @return void
        */

@@ -1,17 +1,16 @@
 
+
 .notification {
-  position: absolute;
+  position: fixed;
+  bottom: 0;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  z-index: 1000;
   color: black;
   pointer-events: none;
-  border: 2px solid red;
-
 
   &_container {
     box-sizing: border-box;
@@ -37,7 +36,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 2px solid red;
+        //border: 2px solid red;
         position: relative;
         border-radius: .25rem;
         background-color: black;

@@ -21,9 +21,10 @@ background: black;
   overflow: hidden;
   height: 300px;
   width: 300px;
-  border: 1px solid #ddd;
+  border: 1px solid black;
   border-radius: 10px;
   background-color: white;
+  box-shadow: 5px 5px 12px black;
 }
 
 .magnifier__img {

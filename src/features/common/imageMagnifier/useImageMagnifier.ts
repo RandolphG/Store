@@ -77,6 +77,7 @@ export const useImageMagnifier = () => {
        * @return void
        */
       const handleMouseMove = (event: MouseEvent) => {
+        console.log("MOVE");
         const [mouseX, mouseY] = [event.pageX + 40, event.pageY - 20];
         const { top, left, bottom, right } = img.getBoundingClientRect();
         transform.translate = [
@@ -102,6 +103,7 @@ export const useImageMagnifier = () => {
        * @return void
        */
       const handleMouseWheel = (event: WheelEvent) => {
+        console.log("WHEEL");
         event.preventDefault();
         const scrollingUp = event.deltaY < 0;
         const { scale } = transform;
@@ -133,7 +135,9 @@ export const useImageMagnifier = () => {
     };
 
     const img = <HTMLImageElement>document.querySelector(".image-preview-js");
-    makeImgMagnified(img);
+    // makeImgMagnified(reference.current);
+    // makeImgMagnified(img);
   }, []);
+
   return {};
 };

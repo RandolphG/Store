@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { selectProductDetail } from "../../productDetails";
 

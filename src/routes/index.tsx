@@ -9,7 +9,7 @@ let index: RouteObject[] = [
     path: "/",
     element: (
       <PublicRoute>
-        <ProductPage />
+        <ImageMagnifier />
       </PublicRoute>
     ),
   },

@@ -1,9 +1,29 @@
-import React from "react";
+import React, { forwardRef } from "react";
+import { ImageMagnifier } from "../imageMagnifier";
 import { useImageSlider } from "./useImageSlider";
 import "./SliderStyles.scss";
 
-const Slider = () => {
+const Slider = ({
+  reference,
+  handleOnMove,
+  handleMouseEnter,
+  handleMouseLeave,
+}: any) => {
   const { product } = useImageSlider();
+
+  const SliderImage = forwardRef((props, reference) => (
+    <img /*@ts-ignore*/
+      ref={reference}
+      {...props}
+      alt="image-preview"
+      className="image-preview image-preview-js"
+      src="https://assets.petco.com/petco/image/upload/f_auto,q_auto/2668223-center-1"
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleOnMove}
+      onMouseLeave={handleMouseLeave}
+    />
+  ));
+
   return (
     <div>
       <div id="slider">
@@ -11,18 +31,13 @@ const Slider = () => {
         <a className="control_prev">{"<"}</a>
         <ul id="slides">
           {product.images.map((img, idx) => {
-            console.log("IMAGES", img);
             return (
               <li
                 key={`slide -${idx}`}
                 id="slide"
                 style={{ background: "#aaa" }}
               >
-                <img
-                  alt="image-preview"
-                  className="image-preview image-preview-js"
-                  src="https://assets.petco.com/petco/image/upload/f_auto,q_auto/2668223-center-1"
-                />
+                <SliderImage ref={reference} />
               </li>
             );
           })}

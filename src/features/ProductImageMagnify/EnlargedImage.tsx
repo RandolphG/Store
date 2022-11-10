@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
-  getLensModeEnlargedImageCoordinates,
-  getInPlaceEnlargedImageCoordinates,
-} from "./lib/imageCoordinates";
-import { LargeImageShape, SmallImageShape } from "./prop-types/Image";
-import { ContainerDimensions } from "./prop-types/EnlargedImage";
-import { noop } from "./utils";
-import { Point } from "./prop-types/Point";
-import {
   getEnlargedImageContainerStyle,
   getEnlargedImageStyle,
-} from "./lib/styles";
+  getLensModeEnlargedImageCoordinates,
+  getInPlaceEnlargedImageCoordinates,
+} from "./lib";
+import {
+  Point,
+  ContainerDimensions,
+  LargeImageShape,
+  SmallImageShape,
+} from "./prop-types";
+import { noop } from "./utils";
 
 interface Props {
   containerClassName: string;

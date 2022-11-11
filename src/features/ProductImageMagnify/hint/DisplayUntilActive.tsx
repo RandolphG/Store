@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 interface Props {
   shouldHideAfterFirstActivation: boolean;
-  isActive: boolean;
+  isActive?: boolean;
   children: JSX.Element;
 }
 
@@ -15,8 +15,8 @@ interface Props {
  */
 const DisplayUntilActive = ({
   children,
-  isActive,
   shouldHideAfterFirstActivation = true,
+  isActive,
 }: Props) => {
   const [hasShown, setHasShown] = useState(false);
   const shouldShow =

@@ -1,69 +1,32 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React from "react";
 import ReactCursorPosition from "react-cursor-position";
 import { useReactImageMagnify } from "./useReactImageMagnify";
-import { primaryInput } from "./utils/detectIt";
 import RenderEnlargedImage from "./RenderEnlargedImage";
-import NegativeSpaceLens from "./lens/negative-space";
-import PositiveSpaceLens from "./lens/positive-space";
-import DisplayUntilActive from "./hint/DisplayUntilActive";
-import Hint from "./hint/DefaultHint";
-import {
-  getContainerStyle,
-  getSmallImageStyle,
-  getLensCursorOffset,
-  getEnlargedImageContainerDimension,
-} from "./lib";
-import {
-  EnlargedImagePosition,
-  EnlargedImageContainerDimensions,
-  LargeImageShape,
-  SmallImageShape,
-} from "./prop-types/";
+import { DisplayUntilActive } from "./hint";
+import { getContainerStyle, getSmallImageStyle } from "./lib";
+import { ReactImageMagnifyProps } from "./prop-types/";
 import { noop } from "./utils";
-import { INPUT_TYPE, ENLARGED_IMAGE_POSITION } from "./constants";
-
-export interface Props {
-  className: string;
-  style: {};
-  hoverDelayInMs: number;
-  hoverOffDelayInMs: number;
-  fadeDurationInMs: number;
-  pressDuration: number;
-  pressMoveThreshold: number;
-  isActivatedOnTouch: boolean;
-  imageClassName: string;
-  imageStyle: {};
-  lensStyle: {};
-  lensComponent: () => void;
-  shouldUsePositiveSpaceLens: boolean;
-  smallImage: SmallImageShape;
-  largeImage: LargeImageShape;
-  enlargedImageContainerClassName: string;
-  enlargedImageContainerStyle: {};
-  enlargedImageClassName: string;
-  enlargedImageStyle: {};
-  enlargedImageContainerDimensions: EnlargedImageContainerDimensions;
-  enlargedImagePosition: EnlargedImagePosition;
-  enlargedImagePortalId: string;
-  isEnlargedImagePortalEnabledForTouch: boolean;
-  hintComponent: FC<{
-    isTouchDetected: boolean;
-    hintTextMouse: string;
-    hintTextTouch: string;
-  }>;
-  hintTextMouse: string;
-  hintTextTouch: string;
-  isHintEnabled: boolean;
-  shouldHideHintAfterFirstActivation: boolean;
-}
 
 /**
  * ReactImageMagnify
- * @param props
  * @constructor
+ * @param passedProps
  */
-const ReactImageMagnify = (props: Props) => {
-  useReactImageMagnify(props);
+const ReactImageMagnify = (passedProps: ReactImageMagnifyProps) => {
+  const {
+    props,
+    onDetectedInputTypeChanged,
+    onSmallImageLoad,
+    isTouchDetected,
+    getEnlargedImageContainerDimensions,
+    cursorOffset,
+    getIsTouchDetected,
+    getIsInPlaceMode,
+    getShouldShowLens,
+    Lens,
+    Hint,
+    setImageReference,
+  } = useReactImageMagnify(passedProps);
   return (
     <ReactCursorPosition
       className={props.className}
@@ -83,10 +46,9 @@ const ReactImageMagnify = (props: Props) => {
         alt={props.smallImage.alt}
         className={props.imageClassName}
         style={getSmallImageStyle(props.smallImage, props.imageStyle)}
-        /*TODO needs an image reference */
-        ref={(el) => (imageReference = el)}
+        ref={(el) => setImageReference(el)}
         onLoad={onSmallImageLoad}
-        onError={() => {}}
+        onError={noop}
       />
       {props.isHintEnabled && (
         <DisplayUntilActive
@@ -94,7 +56,7 @@ const ReactImageMagnify = (props: Props) => {
             props.shouldHideHintAfterFirstActivation
           }
         >
-          <HintComponent
+          <Hint
             isTouchDetected={isTouchDetected}
             hintTextMouse={props.hintTextMouse}
             hintTextTouch={props.hintTextTouch}

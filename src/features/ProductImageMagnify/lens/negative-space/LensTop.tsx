@@ -1,6 +1,6 @@
 import React from "react";
 import Lens from "./Lens";
-import { LensProps } from "../../prop-types/Lens";
+import { LensProps } from "../../prop-types";
 
 /**
  * LensTop

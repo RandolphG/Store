@@ -1,21 +1,15 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ENLARGED_IMAGE_POSITION, INPUT_TYPE } from "./constants";
-import NegativeSpaceLens from "./lens/negative-space";
-import PositiveSpaceLens from "./lens/positive-space";
+import { PositiveSpaceLens, NegativeSpaceLens } from "./lens";
 import { getEnlargedImageContainerDimension, getLensCursorOffset } from "./lib";
-import {
-  EnlargedImageContainerDimensions,
-  EnlargedImagePosition,
-  LargeImageShape,
-  SmallImageShape,
-} from "./prop-types";
-import { Props } from "./ReactImageMagnify";
-import { noop } from "./utils";
-import { primaryInput } from "./utils/detectIt";
+import { cursorOffset, ReactImageMagnifyProps } from "./prop-types";
+import { primaryInput, noop } from "./utils";
 
-export const useReactImageMagnify = (props: Props) => {
+export const useReactImageMagnify = (props: ReactImageMagnifyProps) => {
   const { mouse: MOUSE, touch: TOUCH } = INPUT_TYPE;
-  let imageReference = useRef(null);
+  const [imageReference, setImageReference] = useState<HTMLImageElement | null>(
+    null
+  );
   const [state, setState] = useState({
     smallImageWidth: 0,
     smallImageHeight: 0,
@@ -40,7 +34,7 @@ export const useReactImageMagnify = (props: Props) => {
 
   /**
    * onSmallImageLoad
-   * @param e
+   * @description set dimensions of small image
    */
   const onSmallImageLoad = () => {
     const {
@@ -59,6 +53,7 @@ export const useReactImageMagnify = (props: Props) => {
   /**
    * onDetectedInputTypeChanged
    * @param detectedInputType
+   * @return void
    */
   const onDetectedInputTypeChanged = (detectedInputType: any) => {
     const updatedState = { ...state, detectedInputType };
@@ -67,10 +62,11 @@ export const useReactImageMagnify = (props: Props) => {
 
   /**
    * setSmallImageDimensionState
+   * @return void
    */
   const setSmallImageDimensionState = () => {
     const { offsetWidth: smallImageWidth, offsetHeight: smallImageHeight } =
-      this.smallImageEl;
+      imageReference!;
 
     const updatedState = { ...state, smallImageWidth, smallImageHeight };
     setState(updatedState);
@@ -136,7 +132,7 @@ export const useReactImageMagnify = (props: Props) => {
     } = props;
 
     const { width: smallImageWidth, height: smallImageHeight } =
-      this.smallImage;
+      imageReference!;
 
     const isInPlaceMode = getIsInPlaceMode();
 
@@ -176,6 +172,8 @@ export const useReactImageMagnify = (props: Props) => {
 
   /**
    * getLensComponent
+   * @description return type of lens
+   * @return PositiveSpaceLens|NegativeSpaceLens|DefaultHint
    */
   const getLensComponent = () => {
     const { shouldUsePositiveSpaceLens, lensComponent } = props;
@@ -191,19 +189,15 @@ export const useReactImageMagnify = (props: Props) => {
     return NegativeSpaceLens;
   };
 
-  const {
-    smallImage: { onError = noop },
-    largeImage,
-    hintComponent: HintComponent,
-  } = props;
-
-  const smallImage = getSmallImage();
+  const { largeImage, hintComponent: Hint } = props;
 
   const {
     detectedInputType: { isTouchDetected },
   } = state;
 
-  const cursorOffset = getLensCursorOffset(
+  const smallImage = getSmallImage();
+
+  const cursorOffset: cursorOffset = getLensCursorOffset(
     smallImage,
     largeImage,
     getEnlargedImageContainerDimensions()
@@ -211,5 +205,19 @@ export const useReactImageMagnify = (props: Props) => {
 
   const Lens = getLensComponent();
 
-  return props;
+  return {
+    props,
+    Lens,
+    getEnlargedImageContainerDimensions,
+    getEnlargedImagePlacement,
+    getShouldShowLens,
+    onDetectedInputTypeChanged,
+    onSmallImageLoad,
+    isTouchDetected,
+    cursorOffset,
+    getIsTouchDetected,
+    getIsInPlaceMode,
+    Hint,
+    setImageReference,
+  };
 };

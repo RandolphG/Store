@@ -1,5 +1,5 @@
 import React from "react";
-import { LensProps } from "../../prop-types/Lens";
+import { LensProps } from "../../prop-types";
 import { clamp } from "../../utils";
 import Lens from "./Lens";
 

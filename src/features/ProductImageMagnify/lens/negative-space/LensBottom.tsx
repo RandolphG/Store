@@ -1,11 +1,7 @@
 import React from "react";
 import { clamp } from "../../utils";
 import Lens from "./Lens";
-import { LensProps } from "../../prop-types/Lens";
-/*
-
-
-*/
+import { LensProps } from "../../prop-types";
 
 /**
  * LensBottom

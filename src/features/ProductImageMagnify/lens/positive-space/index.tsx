@@ -1,5 +1,5 @@
 import React from "react";
-import { LensProps } from "../../prop-types/Lens";
+import { LensProps } from "../../prop-types";
 import { clamp } from "../../utils";
 import dataUri from "./assets/textured-lens-data-uri";
 
@@ -90,22 +90,19 @@ const PositiveSpaceLens = ({
   };
 
   const getCompositeStyle = (): composite => {
-    const composite = Object.assign(
+    return Object.assign(
       {},
       getUserSpecifiedStyle(),
       getDefaultStyle(),
       getPriorityStyle()
     );
-
-    return composite;
   };
 
   /*
    * TS2559: Type '() => { transition: string; backgroundImage: string; } &
    * { position: string; top: string; left: string; width: string; height: string; opacity: number; }'
    * has no properties in common with type 'Properties<string | number, string & {}>'
-   * */
-  /*@ts-ignore*/
+   * @ts-ignore */
   return <div style={getCompositeStyle()} />;
 };
 

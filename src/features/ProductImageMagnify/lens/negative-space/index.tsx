@@ -1,5 +1,5 @@
 import React from "react";
-import { LensProps } from "../../prop-types/Lens";
+import { LensProps } from "../../prop-types/";
 import LensTop from "./LensTop";
 import LensLeft from "./LensLeft";
 import LensRight from "./LensRight";

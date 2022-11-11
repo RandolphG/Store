@@ -2,8 +2,8 @@ export function isPercentageFormat(val: string | number) {
   return typeof val === "string" && /^\d+%$/.test(val);
 }
 
-export function convertPercentageToDecimal(percentage: string) {
-  return parseInt(percentage) / 100;
+export function convertPercentageToDecimal(percentage: number) {
+  return percentage / 100;
 }
 
 export function getEnlargedImageContainerDimension({
@@ -11,7 +11,7 @@ export function getEnlargedImageContainerDimension({
   smallImageDimension,
   isInPlaceMode,
 }: {
-  containerDimension: string;
+  containerDimension: number;
   smallImageDimension: number;
   isInPlaceMode: boolean;
 }) {

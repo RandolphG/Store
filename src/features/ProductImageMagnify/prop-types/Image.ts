@@ -42,3 +42,5 @@ export type coordinates = { x: number; y: number };
 export type minCoordinates = { x: number; y: number };
 
 export type maxCoordinates = { x: number; y: number };
+
+export type cursorOffset = { x: number; y: number };

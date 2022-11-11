@@ -12,3 +12,5 @@ export function clamp(value: number, min: number, max: number) {
   min > value ? (value = min) : value > max && (value = max);
   return value;
 }
+
+export * from "./detectIt";

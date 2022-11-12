@@ -1,5 +1,5 @@
 import React from "react";
-import ReactCursorPosition from "react-cursor-position";
+import { CursorPosition } from "../cursorPosition";
 import { useReactImageMagnify } from "./useReactImageMagnify";
 import RenderEnlargedImage from "./RenderEnlargedImage";
 import { DisplayUntilActive } from "./hint";
@@ -9,26 +9,27 @@ import { noop } from "./utils";
 
 /**
  * ReactImageMagnify
- * @constructor
+ * @description Magnify the image of reference
  * @param passedProps
+ * @return JSX.Element
  */
 const ReactImageMagnify = (passedProps: ReactImageMagnifyProps) => {
   const {
     props,
+    isTouchDetected,
+    cursorOffset,
+    Hint,
     onDetectedInputTypeChanged,
     onSmallImageLoad,
-    isTouchDetected,
     getEnlargedImageContainerDimensions,
-    cursorOffset,
     getIsTouchDetected,
     getIsInPlaceMode,
     getShouldShowLens,
     Lens,
-    Hint,
-    setImageReference,
+    handImageRef,
   } = useReactImageMagnify(passedProps);
   return (
-    <ReactCursorPosition
+    <CursorPosition
       className={props.className}
       hoverDelayInMs={props.hoverDelayInMs}
       hoverOffDelayInMs={props.hoverOffDelayInMs}
@@ -45,8 +46,9 @@ const ReactImageMagnify = (passedProps: ReactImageMagnifyProps) => {
         sizes={props.smallImage.sizes}
         alt={props.smallImage.alt}
         className={props.imageClassName}
+        /*@ts-ignore*/
         style={getSmallImageStyle(props.smallImage, props.imageStyle)}
-        ref={(el) => setImageReference(el)}
+        ref={handImageRef}
         onLoad={onSmallImageLoad}
         onError={noop}
       />
@@ -74,11 +76,11 @@ const ReactImageMagnify = (passedProps: ReactImageMagnifyProps) => {
       <RenderEnlargedImage
         containerClassName={props.enlargedImageContainerClassName}
         containerDimensions={getEnlargedImageContainerDimensions()}
-        containerStyle={props.enlargedImageContainerStyle}
-        cursorOffset={cursorOffset}
         fadeDurationInMs={props.fadeDurationInMs}
+        containerStyle={props.enlargedImageContainerStyle}
         imageClassName={props.enlargedImageClassName}
         imageStyle={props.enlargedImageStyle}
+        cursorOffset={cursorOffset}
         largeImage={props.largeImage}
         smallImage={props.smallImage}
         portalId={props.enlargedImagePortalId}
@@ -86,7 +88,7 @@ const ReactImageMagnify = (passedProps: ReactImageMagnifyProps) => {
         isTouchDetected={getIsTouchDetected()}
         isInPlaceMode={getIsInPlaceMode()}
       />
-    </ReactCursorPosition>
+    </CursorPosition>
   );
 };
 

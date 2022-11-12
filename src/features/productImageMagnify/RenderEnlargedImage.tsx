@@ -6,7 +6,7 @@ import { useRenderEnlargeImage } from "./useRenderEnlargeImage";
 
 /**
  * RenderEnlargedImage
- * @param props
+ * @param {RenderEnlargedImageProps} props
  */
 const RenderEnlargedImage = (props: RenderEnlargedImageProps) => {
   const { isMounted, portalElement, propsToPass, getIsPortalRendered } =

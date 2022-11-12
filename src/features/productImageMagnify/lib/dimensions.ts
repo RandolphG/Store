@@ -1,11 +1,25 @@
+/**
+ * isPercentageFormat
+ * @param val
+ */
 export function isPercentageFormat(val: string | number) {
   return typeof val === "string" && /^\d+%$/.test(val);
 }
 
+/**
+ * convertPercentageToDecimal
+ * @param percentage
+ */
 export function convertPercentageToDecimal(percentage: number) {
   return percentage / 100;
 }
 
+/**
+ * getEnlargedImageContainerDimension
+ * @param containerDimension
+ * @param smallImageDimension
+ * @param isInPlaceMode
+ */
 export function getEnlargedImageContainerDimension({
   containerDimension,
   smallImageDimension,

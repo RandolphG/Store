@@ -1,5 +1,8 @@
-import { ContainerDimensions } from "../prop-types/EnlargedImage";
-import { LargeImageShape, SmallImageShape } from "../prop-types/Image";
+import {
+  LargeImageShape,
+  SmallImageShape,
+  ContainerDimensions,
+} from "../prop-types";
 
 /**
  * getSmallToLargeImageRatio

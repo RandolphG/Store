@@ -138,12 +138,12 @@ export const useReactImageMagnify = (props: ReactImageMagnifyProps) => {
 
     return {
       width: getEnlargedImageContainerDimension({
-        containerDimension: containerWidth as string,
+        containerDimension: containerWidth,
         smallImageDimension: smallImageWidth,
         isInPlaceMode,
       }),
       height: getEnlargedImageContainerDimension({
-        containerDimension: containerHeight as string,
+        containerDimension: containerHeight,
         smallImageDimension: smallImageHeight,
         isInPlaceMode,
       }),
@@ -189,6 +189,10 @@ export const useReactImageMagnify = (props: ReactImageMagnifyProps) => {
     return NegativeSpaceLens;
   };
 
+  const handImageRef = (el: HTMLImageElement) => {
+    setImageReference(el);
+  };
+
   const { largeImage, hintComponent: Hint } = props;
 
   const {
@@ -218,6 +222,7 @@ export const useReactImageMagnify = (props: ReactImageMagnifyProps) => {
     getIsTouchDetected,
     getIsInPlaceMode,
     Hint,
+    handImageRef,
     setImageReference,
   };
 };

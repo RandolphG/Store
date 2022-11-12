@@ -1,12 +1,12 @@
-import { ContainerDimensions } from "../prop-types/EnlargedImage";
 import {
+  ContainerDimensions,
   coordinates,
   LargeImageShape,
   SmallImageShape,
   minCoordinates,
   maxCoordinates,
-} from "../prop-types/Image";
-import { Point } from "../prop-types/Point";
+  Point,
+} from "../prop-types";
 import { clamp } from "../utils";
 import {
   getContainerToImageRatio,

@@ -1,44 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getEnlargedImageContainerStyle,
   getEnlargedImageStyle,
-  getLensModeEnlargedImageCoordinates,
   getInPlaceEnlargedImageCoordinates,
+  getLensModeEnlargedImageCoordinates,
 } from "./lib";
-import {
-  Point,
-  ContainerDimensions,
-  LargeImageShape,
-  SmallImageShape,
-} from "./prop-types";
-import { noop } from "./utils";
+import { EnlargedImageProps, Transition } from "./prop-types";
 
-interface Props {
-  containerClassName: string;
-  containerStyle: {};
-  cursorOffset: Point;
-  position: Point;
-  fadeDurationInMs: number;
-  imageClassName: string;
-  imageStyle: {};
-  isActive: boolean;
-  isLazyLoaded: boolean;
-  largeImage: LargeImageShape;
-  smallImage: SmallImageShape;
-  containerDimensions: ContainerDimensions;
-  isPortalRendered: boolean;
-  isInPlaceMode: boolean;
-  isPositionOutside: boolean;
-}
-
-interface Transition {
-  isTransitionEntering: boolean;
-  isTransitionActive: boolean;
-  isTransitionLeaving: boolean;
-  isTransitionDone: boolean;
-}
-
-const EnlargedImage = (props: Props) => {
+export const useEnlargeImage = (props: EnlargedImageProps) => {
   const [transitions, setTransitions] = useState<Transition>({
     isTransitionEntering: false,
     isTransitionActive: false,
@@ -60,7 +29,7 @@ const EnlargedImage = (props: Props) => {
    * @param nextProps
    * TODO check validity of this function
    */
-  const scheduleCssTransition = (nextProps: Props) => {
+  const scheduleCssTransition = (nextProps: EnlargedImageProps) => {
     const { fadeDurationInMs, isActive, isPositionOutside } = props;
     const willIsActiveChange = isActive !== nextProps.isActive;
     const willIsPositionOutsideChange =
@@ -110,6 +79,7 @@ const EnlargedImage = (props: Props) => {
 
   /**
    * getImageCoordinates
+   * @return
    */
   const getImageCoordinates = () => {
     const {
@@ -174,39 +144,5 @@ const EnlargedImage = (props: Props) => {
     });
   };
 
-  const component = () => {
-    const {
-      largeImage: { alt = "", onLoad = noop, onError = noop },
-    } = props;
-
-    return (
-      <div className={props.containerClassName} style={getContainerStyle()}>
-        {/*
-            TS2322: Type '{ width: number; height: number; transform: string; WebkitTransform: string;
-            msTransform: string; pointerEvents: string; }' is not assignable to type 'Properties<string | number, string & {}>'.
-             Types of property 'pointerEvents' are incompatible.
-             Type 'string' is not assignable to type 'PointerEvents | undefined'.
-        */}
-        <img
-          alt="EnlargedImage"
-          className={props.imageClassName}
-          src={props.largeImage.src}
-          srcSet={props.largeImage.srcSet}
-          sizes={props.largeImage.sizes}
-          /*@ts-ignore*/
-          style={getImageStyle()}
-          onLoad={() => {}}
-          onError={() => {}}
-        />
-      </div>
-    );
-  };
-
-  if (props.isLazyLoaded) {
-    return getIsVisible() ? component : null;
-  }
-
-  return component;
+  return { getIsVisible, getContainerStyle };
 };
-
-export default EnlargedImage;

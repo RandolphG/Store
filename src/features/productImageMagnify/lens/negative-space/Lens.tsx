@@ -15,7 +15,6 @@ interface Props {
  * @param isActive
  * @param translateX
  * @param translateY
- * @param userStyle
  * @param isPositionOutside
  * @return JSX.Element
  */
@@ -23,9 +22,6 @@ const Lens = ({
   style,
   fadeDurationInMs = 0,
   isActive = false,
-  translateX = 0,
-  translateY = 0,
-  userStyle,
   isPositionOutside,
 }: Props) => {
   const defaultStyle = {

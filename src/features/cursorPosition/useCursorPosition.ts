@@ -1,20 +1,24 @@
 import { Children, cloneElement, useEffect, useState } from "react";
 import { INTERACTIONS, MOUSE_EMULATION_GUARD_TIMER_NAME } from "./constants";
-import { CursorPositionTypes } from "./types";
-import Core from "./lib/ElementRelativeCursorPosition";
+import { CursorPositionTypes, state } from "./types";
+import {
+  Core,
+  PressActivation,
+  TouchActivation,
+  TapActivation,
+  HoverActivation,
+  ClickActivation,
+} from "./lib";
+import { exclude } from "./utils";
 import addEventListener from "./utils/addEventListener";
-import PressActivation from "./lib/PressActivation";
-import TouchActivation from "./lib/TouchActivation";
-import TapActivation from "./lib/TapActivation";
-import HoverActivation from "./lib/HoverActivation";
-import ClickActivation from "./lib/ClickActivation";
+import noop from "./utils/noop";
 
 export const useCursorPosition = (props: CursorPositionTypes) => {
   const [element, setElement] = useState<any>(null);
   const [core, setCore] = useState<any>(null);
   const [mouseActivation, setMouseActivation] = useState<any>(null);
   const [touchActivation, setTouchActivation] = useState<any>(null);
-  const [state, setState] = useState({
+  const [state, setState] = useState<state>({
     detectedEnvironment: {
       isMouseDetected: false,
       isTouchDetected: false,
@@ -40,13 +44,50 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
   };
 
   useEffect(() => {
+    checkArguments();
     if (props.isEnabled) {
       enable();
     }
     setTouchActivationStrategy(props.activationInteractionTouch);
     setMouseActivationStrategy(props.activationInteractionMouse);
+    return () => {
+      disable();
+    };
   });
 
+  /**
+   * checkArguments
+   * @description set props default value
+   * @return props
+   */
+  function checkArguments() {
+    if (arguments.length > 0) {
+      return {
+        ...props,
+        activationInteractionMouse: INTERACTIONS.HOVER,
+        activationInteractionTouch: INTERACTIONS.PRESS,
+        hoverDelayInMs: 0,
+        hoverOffDelayInMs: 0,
+        isEnabled: true,
+        mapChildProps: (props: CursorPositionTypes) => props,
+        onActivationChanged: noop,
+        onDetectedEnvironmentChanged: noop,
+        onPositionChanged: noop,
+        pressDurationInMs: 500,
+        pressMoveThreshold: 5,
+        shouldDecorateChildren: true,
+        shouldStopTouchMovePropagation: false,
+        tapDurationInMs: 180,
+        tapMoveThreshold: 5,
+      };
+    }
+  }
+
+  /**
+   * onIsActiveChanged
+   * @param isActive
+   * @return void
+   */
   const onIsActiveChanged = ({ isActive }: { isActive: boolean }) => {
     if (isActive) {
       activate();
@@ -55,7 +96,12 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     }
   };
 
-  const onTouchStart = (e) => {
+  /**
+   * onTouchStart
+   * @param e
+   * @return void
+   */
+  const onTouchStart = (e: TouchEvent) => {
     init();
     onTouchDetected();
     setShouldGuardAgainstMouseEmulationByDevices();
@@ -66,13 +112,17 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     touchActivation.touchStarted({ e, position });
   };
 
-  const onTouchMove = (e) => {
+  /**
+   * onTouchMove
+   * @param e
+   */
+  const onTouchMove = (e: TouchEvent) => {
     if (!isCoreReady) {
       return;
     }
 
     const position = core.getCursorPosition(getTouchEvent(e));
-    this.touchActivation.touchMoved({ e, position });
+    touchActivation.touchMoved({ e, position });
 
     if (!state.isActive) {
       return;
@@ -86,18 +136,28 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     }
   };
 
+  /**
+   * onTouchEnd
+   */
   const onTouchEnd = () => {
     touchActivation.touchEnded();
     unsetShouldGuardAgainstMouseEmulationByDevices();
   };
 
+  /**
+   * onTouchCancel
+   */
   const onTouchCancel = () => {
     touchActivation.touchCanceled();
 
     unsetShouldGuardAgainstMouseEmulationByDevices();
   };
 
-  const onMouseEnter = (e) => {
+  /**
+   * onMouseEnter
+   * @param e
+   */
+  const onMouseEnter = (e: MouseEvent) => {
     if (shouldGuardAgainstMouseEmulationByDevices) {
       return;
     }
@@ -108,7 +168,11 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     mouseActivation.mouseEntered();
   };
 
-  const onMouseMove = (e) => {
+  /**
+   * onMouseMove
+   * @param e
+   */
+  const onMouseMove = (e: MouseEvent) => {
     if (!isCoreReady) {
       return;
     }
@@ -118,61 +182,93 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     mouseActivation.mouseMoved(position);
   };
 
+  /**
+   * onMouseLeave
+   */
   const onMouseLeave = () => {
     mouseActivation.mouseLeft();
-    setState({...state, isPositionOutside: true });
+    setState({ ...state, isPositionOutside: true });
   };
 
-  const onClick = (e) => {
+  /**
+   * onClick
+   * @param e
+   */
+  const onClick = (e: MouseEvent) => {
     setPositionState(core.getCursorPosition(e));
     mouseActivation.mouseClicked();
     onMouseDetected();
   };
 
+  /**
+   * onTouchDetected
+   */
   const onTouchDetected = () => {
     const environment = {
       isTouchDetected: true,
       isMouseDetected: false,
     };
 
-    setState({...state, detectedEnvironment: environment });
+    setState({ ...state, detectedEnvironment: environment });
     props.onDetectedEnvironmentChanged(environment);
   };
 
+  /**
+   * onMouseDetected
+   */
   const onMouseDetected = () => {
     const environment = {
       isTouchDetected: false,
       isMouseDetected: true,
     };
 
-    setState({...state, detectedEnvironment: environment });
+    setState({ ...state, detectedEnvironment: environment });
     props.onDetectedEnvironmentChanged(environment);
   };
 
+  /**
+   * onPositionChanged
+   */
   const onPositionChanged = () => {
     const { onPositionChanged } = props;
     onPositionChanged(state);
   };
 
+  /**
+   * isCoreReady
+   */
   const isCoreReady = () => {
     return !!core;
   };
 
+  /**
+   * enable
+   */
   const enable = () => {
     addEventListeners();
   };
 
+  /**
+   * disable
+   */
   const disable = () => {
     removeEventListeners();
   };
 
+  /**
+   * init
+   */
   const init = () => {
     setCore(new Core(element));
 
     setElementDimensionsState(getElementDimensions(element));
   };
 
-  const setTouchActivationStrategy = (interaction) => {
+  /**
+   * setTouchActivationStrategy
+   * @param interaction
+   */
+  const setTouchActivationStrategy = (interaction: INTERACTIONS) => {
     const {
       pressDurationInMs,
       pressMoveThreshold,
@@ -213,46 +309,63 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     }
   };
 
-  const setMouseActivationStrategy = (interaction) => {
+  /**
+   * setMouseActivationStrategy
+   * @param interaction
+   */
+  const setMouseActivationStrategy = (interaction: INTERACTIONS) => {
     const { hoverDelayInMs, hoverOffDelayInMs } = props;
 
     const { HOVER, CLICK } = INTERACTIONS;
 
     switch (interaction) {
       case HOVER:
-        setMouseActivation( new HoverActivation({
-          onIsActiveChanged: this.onIsActiveChanged,
-          hoverDelayInMs,
-          hoverOffDelayInMs,
-        }));
+        setMouseActivation(
+          new HoverActivation({
+            onIsActiveChanged: onIsActiveChanged,
+            hoverDelayInMs,
+            hoverOffDelayInMs,
+          })
+        );
         break;
       case CLICK:
-        setMouseActivation( = new ClickActivation({
-          onIsActiveChanged: onIsActiveChanged,
-        }));
+        setMouseActivation(
+          new ClickActivation({
+            onIsActiveChanged: onIsActiveChanged,
+          })
+        );
         break;
       default:
         throw new Error("Must implement a mouse activation strategy");
     }
   };
 
+  /**
+   * reset
+   */
   const reset = () => {
-    const { core: { lastEvent: lastMouseEvent } = {} } = this;
+    /*const {core: {lastEvent: lastMouseEvent= {}} } = core;
 
-    init();
+        init();
 
-    if (!lastMouseEvent) {
-      return;
-    }
+        if (!lastMouseEvent) {
+            return;
+        }
 
-    setPositionState(core.getCursorPosition(lastMouseEvent));
+        setPositionState(core.getCursorPosition(lastMouseEvent));*/
   };
 
+  /**
+   * activate
+   */
   const activate = () => {
     setState({ ...state, isActive: true });
     props.onActivationChanged({ isActive: true });
   };
 
+  /**
+   * deactivate
+   */
   const deactivate = () => {
     setState({ ...state, isActive: false });
 
@@ -266,30 +379,46 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     props.onActivationChanged({ isActive: false });
   };
 
-  const setPositionState = (position) => {
+  /**
+   * setPositionState
+   * @param position
+   */
+  const setPositionState = (position: { x: number; y: number }) => {
     const isPositionOutside = getIsPositionOutside(position);
 
-    setState(
-      {...state,
-        isPositionOutside,
-        position,
-      }
-    );
+    setState({
+      ...state,
+      isPositionOutside,
+      position,
+    });
 
-    onPositionChanged()
-
+    onPositionChanged();
   };
 
-  const setElementDimensionsState = (dimensions) => {
-    setState({...state,
+  /**
+   * setElementDimensionsState
+   * @param dimensions
+   */
+  const setElementDimensionsState = (dimensions: {
+    width: number;
+    height: number;
+  }) => {
+    setState({
+      ...state,
       elementDimensions: dimensions,
     });
   };
 
+  /**
+   * setShouldGuardAgainstMouseEmulationByDevices
+   */
   const setShouldGuardAgainstMouseEmulationByDevices = () => {
     shouldGuardAgainstMouseEmulationByDevices = true;
   };
 
+  /**
+   * unsetShouldGuardAgainstMouseEmulationByDevices
+   */
   const unsetShouldGuardAgainstMouseEmulationByDevices = () => {
     timers.push({
       name: MOUSE_EMULATION_GUARD_TIMER_NAME,
@@ -299,6 +428,10 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     });
   };
 
+  /**
+   * getElementDimensions
+   * @param el
+   */
   const getElementDimensions = (el: any) => {
     const { width, height } = el.getBoundingClientRect();
 
@@ -308,41 +441,71 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     };
   };
 
+  /**
+   * getIsPositionOutside
+   * @param position
+   */
   const getIsPositionOutside = (position: { x: number; y: number }) => {
     const { x, y } = position;
     const {
       elementDimensions: { width, height },
     } = state;
 
-    const isPositionOutside=() => x < 0 || y < 0 || x > width || y > height;
+    const isPositionOutside = () => x < 0 || y < 0 || x > width || y > height;
 
     return isPositionOutside();
   };
 
+  /**
+   * getTouchEvent
+   * @param e
+   */
   const getTouchEvent = (e: TouchEvent) => {
     return e.touches[0];
   };
 
-  const getIsReactComponent = (reactElement) => {
+  /**
+   * getIsReactComponent
+   * @param reactElement
+   * @return boolean
+   */
+  const getIsReactComponent = (reactElement: any) => {
     return typeof reactElement.type === "function";
   };
 
+  /**
+   * shouldDecorateChild
+   * @param child
+   */
   const shouldDecorateChild = (child: any) => {
     return (
       !!child && getIsReactComponent(child) && props.shouldDecorateChildren
     );
   };
 
-  const decorateChild = (child, props) => {
+  /**
+   * decorateChild
+   * @param child
+   * @param props
+   */
+  const decorateChild = (child: any, props: any) => {
     return cloneElement(child, props);
   };
 
-  const decorateChildren = (children, props) => {
+  /**
+   * decorateChildren
+   * @param children
+   * @param props
+   */
+  const decorateChildren = (children: any, props: any) => {
     return Children.map(children, (child) => {
       return shouldDecorateChild(child) ? decorateChild(child, props) : child;
     });
   };
 
+  /**
+   * addEventListeners
+   */
   const addEventListeners = () => {
     eventListeners.push(
       addEventListener(element, "touchstart", onTouchStart, { passive: false }),
@@ -356,18 +519,31 @@ export const useCursorPosition = (props: CursorPositionTypes) => {
     );
   };
 
+  /**
+   * removeEventListeners
+   */
   const removeEventListeners = () => {
     while (eventListeners.length) {
       eventListeners.pop().removeEventListener();
     }
   };
 
+  /**
+   * getPassThroughProps
+   */
   const getPassThroughProps = () => {
-    const ownPropNames = Object.keys(this.constructor.propTypes);
-    return omit(props, ownPropNames);
+    const ownPropNames = Object.keys(props);
+    return exclude(props, ownPropNames);
   };
 
-  return { decorateChildren, props };
+  return {
+    decorateChildren,
+    getPassThroughProps,
+    props,
+    state,
+    element,
+    setElement,
+  };
 };
 
 /*static displayName = 'ReactCursorPosition';

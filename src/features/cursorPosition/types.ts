@@ -11,7 +11,7 @@ export interface CursorPositionTypes {
   hoverDelayInMs: number;
   hoverOffDelayInMs: number;
   isEnabled: boolean;
-  mapChildProps: () => void;
+  mapChildProps: (state: state) => state;
   onActivationChanged: onActivationChanged;
   onDetectedEnvironmentChanged: onDetectedEnvironmentChanged;
   onPositionChanged: onPositionChanged;
@@ -24,9 +24,17 @@ export interface CursorPositionTypes {
   tapMoveThreshold: number;
 }
 
+export type state = {
+  detectedEnvironment: { isMouseDetected: boolean; isTouchDetected: boolean };
+  elementDimensions: { width: number; height: number };
+  isActive: boolean;
+  isPositionOutside: boolean;
+  position: {};
+};
+
 type onActivationChanged = ({ isActive }: { isActive: boolean }) => void;
 
-type onDetectedEnvironmentChanged = () => void;
+type onDetectedEnvironmentChanged = (environment: environment) => void;
 
 type onPositionChanged = ({
   isPositionOutside,
@@ -35,3 +43,18 @@ type onPositionChanged = ({
   isPositionOutside: any;
   position: any;
 }) => void;
+
+type environment = {
+  isTouchDetected: boolean;
+  isMouseDetected: boolean;
+};
+
+export type eventName =
+  | "touchstart"
+  | "touchmove"
+  | "touchend"
+  | "touchcancel"
+  | "mouseenter"
+  | "mousemove"
+  | "mouseleave"
+  | "click";

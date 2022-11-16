@@ -7,7 +7,7 @@ import { Notifications } from "./features";
 import reportWebVitals from "./reportWebVitals";
 import Routes from "./routes";
 import { HashRouter as Router } from "react-router-dom";
-
+import "./theme/styles.scss";
 const container = document.getElementById("root")!;
 const root = createRoot(container);
 

@@ -3,3 +3,4 @@ export * from "./notifications";
 export * from "./productsPage";
 export * from "./productDetails";
 export * from "./cart";
+export * from "./common";

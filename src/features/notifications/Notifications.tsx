@@ -13,7 +13,7 @@ const Notifications = (): ReactPortal => {
   const { motionSettings, remove, notifications } = useNotifications();
 
   return createPortal(
-    <div key={"notifications"} className="notification">
+    <div key={"notification"} className="notification">
       <div className="notification_container">
         <ul className="notification_container_list">
           <AnimatePresence initial={false}>

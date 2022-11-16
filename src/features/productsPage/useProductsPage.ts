@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../utils";
-import { requestAddProduct, selectCart } from "../cart";
+import { requestAddProduct, selectCartItems } from "../cart";
 import { requestAddNotification } from "../notifications";
 import { requestSetProductDetails } from "../productDetails";
-import { requestSetProducts } from "./ProductSlice";
+import { requestSetLoaded, requestSetProducts } from "./ProductSlice";
 import { Product, Products } from "../../types";
 
 export const useProductsPage = () => {
   const dispatch = useDispatch();
-  const items = useSelector(selectCart);
+  const items = useSelector(selectCartItems);
   const [products, setProducts] = useState<Products>([]);
 
   useEffect(() => {
-    getServerProps().then((_r) => console.log("Done"));
-  });
+    getServerProps().then((_r) => console.log("Done:"));
+  }, []);
 
   async function getServerProps(): Promise<Products> {
     try {
@@ -22,6 +22,7 @@ export const useProductsPage = () => {
       setProducts(serverSideProps);
       dispatch(requestSetProducts(serverSideProps));
       dispatch(requestAddNotification("PRODUCTS FETCHED"));
+      dispatch(requestSetLoaded());
       return serverSideProps;
     } catch (error: any) {
       console.log(error.message());
@@ -43,7 +44,13 @@ export const useProductsPage = () => {
 
   const handleAddProduct = (product: Product) => {
     dispatch(requestAddProduct(product));
+    dispatch(requestAddNotification(`${product.title} Added`));
   };
 
-  return { products, handleSetProductDetails, handleAddProduct, items };
+  return {
+    products,
+    handleSetProductDetails,
+    handleAddProduct,
+    items,
+  };
 };

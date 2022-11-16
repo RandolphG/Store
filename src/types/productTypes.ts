@@ -4,6 +4,7 @@ export type Products = Product[];
 export interface Product {
   id: string;
   title: string;
+  category: string[];
   price: number;
   images: Image[];
   about: string;
@@ -11,17 +12,17 @@ export interface Product {
   options: Option[];
 }
 
-export interface Image {
+export type Image = {
   url: string;
   alt: string;
-}
+};
 
-export interface Option {
+export type Option = {
   name: string;
   style: string;
   values: Value[];
-}
+};
 
-export interface Value {
+export type Value = {
   value: string;
-}
+};

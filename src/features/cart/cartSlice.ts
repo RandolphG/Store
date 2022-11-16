@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { CartState, Product } from "../../types";
-import { add } from "../../utils";
+import { add, remove, removeItem } from "../../utils";
 
 const initialState: CartState = {
-  cart: [],
-  totalItems: 0,
+  items: [],
 };
 
 export const cartSlice = createSlice({
@@ -15,14 +14,37 @@ export const cartSlice = createSlice({
     requestAddProduct: (state: CartState, action: PayloadAction<Product>) => {
       return {
         ...state,
-        cart: add(state.cart, action.payload) as Product[],
+        items: add(state.items, action.payload) as Product[],
       };
+    },
+    requestRemoveProduct: (
+      state: CartState,
+      action: PayloadAction<Product>
+    ) => {
+      console.log("ACTION_REMOVE : ", action.payload);
+
+      console.log("REMOVE_ACTION: ", {
+        ...state,
+        items: removeItem(state.items, action.payload),
+      });
+      return {
+        ...state,
+        items: removeItem(state.items, action.payload),
+      };
+    },
+    requestEmptyCart: (state: CartState, action: PayloadAction<Product>) => {
+      console.log("ACTION_EMPTY_CART");
+      /*return {
+        ...state,
+        items: add(state.items, action.payload) as Product[],
+      };*/
     },
   },
 });
 
-export const selectCart = (state: RootState) => state.cart;
+export const selectCartItems = (state: RootState) => state.cart.items;
 
-export const { requestAddProduct } = cartSlice.actions;
+export const { requestAddProduct, requestRemoveProduct, requestEmptyCart } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

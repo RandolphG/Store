@@ -1,30 +1,75 @@
 import { Notification } from "../features";
 import { Product, Products } from "../types";
+import { dummyProductData } from "./data";
 
+export const defaultUrl = "https://via.placeholder.com/350?text=No+Image";
+export const defaultAlt = "A placeholder to replace a missing product image.";
+
+export enum Bootstrap {
+  BOOTSTRAP_XS = 576,
+  BOOTSTRAP_MD = 768,
+  BOOTSTRAP_LG = 992,
+}
+
+/**
+ * removeItem
+ * @description remove element from array
+ * @param {T[]} arr
+ * @param {T} item
+ * @return {T[]}
+ */
 export function removeItem<T>([...arr]: T[], item: T) {
   const index = arr.indexOf(item);
   index > -1 && arr.splice(index, 1);
   return arr;
 }
 
-/* remove notification from array */
+/**
+ * remove
+ * @description remove element from array
+ * @param arr
+ * @param id
+ * @return {string[]}
+ */
 export const remove = (arr: string[], id: string) => {
-  const notificationsArray = [...arr];
-  notificationsArray.splice(
-    notificationsArray.findIndex((notification) => notification === id),
+  const bufferArray = [...arr];
+  bufferArray.splice(
+    bufferArray.findIndex((notification) => notification === id),
     1
   );
 
-  return notificationsArray;
+  return bufferArray;
 };
 
-/* add notification to array */
+/**
+ * random
+ * @description give a random value
+ * @param {number} min
+ * @param {number} max
+ * @return {number}
+ */
+export function random(min: number, max: number) {
+  const num = Math.floor(Math.random() * (max - min)) + min;
+  return num;
+}
+
+/**
+ * add element to array
+ * @param arr
+ * @param id
+ * @return{string[] | Product[]}
+ */
 export const add = (arr: (string | Product)[], id: string | Product) => {
   return [...arr, id];
 };
 
-/* check to see if elements exist in array */
-export const contains = (original: Notification[], filter: Notification[]) => {
+/**
+ * check to see if elements exist in array
+ * @param {[]} original
+ * @param {[]} filter
+ * @return {boolean}
+ */
+export const contains = (original: any[], filter: any[]) => {
   const res = filter.map((item: Notification) => {
     return original.includes(item);
   });
@@ -32,7 +77,11 @@ export const contains = (original: Notification[], filter: Notification[]) => {
   return !res.includes(false);
 };
 
-/* sort scores alphabetically */
+/**
+ * sort scores alphabetically
+ * @param scores
+ * @return void
+ */
 export const sort = (scores: any[]) => {
   scores.sort((a, b) => {
     return b.score - a.score;
@@ -51,18 +100,21 @@ export const filterObjectByKey = (key: string, data: any) => {
     }, {});
 };
 
-export const BOOTSTRAP_XS = 576;
-export const BOOTSTRAP_MD = 768;
-export const BOOTSTRAP_LG = 992;
-
-export const defaultUrl = "https://via.placeholder.com/350?text=No+Image";
-export const defaultAlt = "A placeholder to replace a missing product image.";
-
+/**
+ * removeTrailingSpace
+ * @param {string} text
+ * @return {string | null}
+ */
 export function removeTrailingSpace(text: string) {
   const match = text.match(/(.*\s*)*\w+/g);
   return match && match[0];
 }
 
+/**
+ * getProducts
+ * @description fetch product data
+ * @return {Promise<Products>}
+ */
 export const getProducts = async (): Promise<Products> => {
   const data = require("./config.json");
 
@@ -78,6 +130,7 @@ export const getProducts = async (): Promise<Products> => {
   throw new Error("products config malformed");
 };
 
+/* framer animations */
 const ease = [0.6, -0.05, 0.01, 0.99];
 const duration = 1.0;
 const transition = {
@@ -144,3 +197,5 @@ export const slideOut = {
     transition,
   },
 };
+
+export { dummyProductData };

@@ -1,3 +1,3 @@
 export { default as ProductPage } from "./ProductPage";
-export * from "./ProductSlice";
-export { default as productsReducer } from "./ProductSlice";
+export * from "./productSlice";
+export { default as productsReducer } from "./productSlice";

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../../utils";
 import { requestAddProduct, selectCartItems } from "../cart";
 import { requestAddNotification } from "../notifications";
 import { requestSetProductDetails } from "../productDetails";
-import { requestSetLoaded, requestSetProducts } from "./ProductSlice";
+import { requestSetLoaded, requestSetProducts } from "./productSlice";
 import { Product, Products } from "../../types";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 export const useProductsPage = () => {
-  const dispatch = useDispatch();
-  const items = useSelector(selectCartItems);
+  const dispatch = useAppDispatch();
+  const items = useAppSelector(selectCartItems);
   const [products, setProducts] = useState<Products>([]);
 
   useEffect(() => {
